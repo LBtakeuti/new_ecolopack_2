@@ -115,6 +115,8 @@ export default function ImageManager() {
   }, []);
 
   const processFile = async (file: File, isEdit: boolean = false) => {
+    console.log('[ImageManager] processFile called:', { fileName: file.name, fileSize: file.size, fileType: file.type });
+    
     // Validate file type
     if (!file.type.startsWith('image/')) {
       alert('画像ファイルを選択してください');
@@ -124,7 +126,10 @@ export default function ImageManager() {
     setIsUploading(true);
     try {
       // Resize image to reduce file size for localStorage
+      console.log('[ImageManager] Resizing image...');
       const resizedBase64 = await resizeImage(file, 1200, 1200);
+      console.log('[ImageManager] Resized image length:', resizedBase64.length);
+      console.log('[ImageManager] Resized image preview:', resizedBase64.substring(0, 100) + '...');
       
       // Check if resized image is still too large (localStorage typically has 5-10MB limit)
       if (resizedBase64.length > 2 * 1024 * 1024) { // 2MB limit for safety
@@ -133,14 +138,16 @@ export default function ImageManager() {
       }
       
       if (isEdit && selectedImage) {
+        console.log('[ImageManager] Updating selected image');
         setSelectedImage({ ...selectedImage, url: resizedBase64 });
       } else {
+        console.log('[ImageManager] Setting preview URL and new image');
         setPreviewUrl(resizedBase64);
-        setNewImage({ ...newImage, file });
+        setNewImage(prev => ({ ...prev, file }));
       }
     } catch (error) {
       console.error('Image processing error:', error);
-      alert('画像の処理中にエラーが発生しました');
+      alert('画像の処理中にエラーが発生しました: ' + (error as Error).message);
     } finally {
       setIsUploading(false);
     }
@@ -201,6 +208,13 @@ export default function ImageManager() {
         console.log('[ImageManager] Generated imageId for product:', imageId);
       }
 
+      // 画像データを最終確認
+      if (!previewUrl || previewUrl.length === 0) {
+        console.error('[ImageManager] Preview URL is empty!');
+        alert('画像データが正しく処理されませんでした。もう一度お試しください。');
+        return;
+      }
+
       const imageItem: ImageItem = {
         id: imageId,
         url: previewUrl,
@@ -210,6 +224,8 @@ export default function ImageManager() {
         uploadDate: new Date().toISOString()
       };
       console.log('[ImageManager] Created imageItem:', imageItem);
+      console.log('[ImageManager] Image URL length:', imageItem.url.length);
+      console.log('[ImageManager] Image URL starts with:', imageItem.url.substring(0, 50));
 
       // 同じIDまたはsectionの画像が既に存在する場合は置き換える
       let updatedImages;
@@ -234,15 +250,34 @@ export default function ImageManager() {
       setImages(updatedImages);
       
       console.log('[ImageManager] Saving to localStorage');
-      localStorage.setItem('siteImages', JSON.stringify(updatedImages));
-      
-      // Verify localStorage
-      const verifyStorage = localStorage.getItem('siteImages');
-      console.log('[ImageManager] Verify localStorage after save:', verifyStorage);
-      
-      console.log('[ImageManager] Dispatching imagesUpdated event');
-      window.dispatchEvent(new Event('imagesUpdated'));
-      console.log('[ImageManager] Updated images saved to localStorage:', updatedImages);
+      try {
+        localStorage.setItem('siteImages', JSON.stringify(updatedImages));
+        
+        // Verify localStorage
+        const verifyStorage = localStorage.getItem('siteImages');
+        console.log('[ImageManager] Verify localStorage after save:', verifyStorage);
+        
+        if (!verifyStorage) {
+          throw new Error('Failed to save to localStorage');
+        }
+        
+        // 少し遅延を入れてイベントを発火
+        setTimeout(() => {
+          console.log('[ImageManager] Dispatching imagesUpdated event');
+          window.dispatchEvent(new Event('imagesUpdated'));
+          window.dispatchEvent(new StorageEvent('storage', {
+            key: 'siteImages',
+            newValue: JSON.stringify(updatedImages),
+            url: window.location.href
+          }));
+        }, 100);
+        
+        console.log('[ImageManager] Updated images saved to localStorage:', updatedImages);
+      } catch (error) {
+        console.error('[ImageManager] Error saving to localStorage:', error);
+        alert('画像の保存に失敗しました。ローカルストレージの容量を確認してください。');
+        return;
+      }
 
       // Reset form
       setNewImage({ name: '', category: 'hero', section: '', file: null });
