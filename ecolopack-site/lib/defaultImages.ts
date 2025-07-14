@@ -19,29 +19,11 @@ export const defaultImages: ImageItem[] = [
     uploadDate: new Date().toISOString(),
     isDefault: true
   },
-  // Product images - ブランフォームトップ
+  // Product images - メイン画像のみ（2枚目の画像を削除）
   {
     id: 'product-1',
     url: '/images/ブランフォームトップ.jpg',
     name: 'ブランフォームトップ - メイン',
-    category: 'products',
-    section: '製品 - ブランフォームトップ',
-    uploadDate: new Date().toISOString(),
-    isDefault: true
-  },
-  {
-    id: 'product-1-1',
-    url: '/images/bfTOP1.png',
-    name: 'ブランフォームトップ - 画像1',
-    category: 'products',
-    section: '製品 - ブランフォームトップ',
-    uploadDate: new Date().toISOString(),
-    isDefault: true
-  },
-  {
-    id: 'product-1-2',
-    url: '/images/bfTOP2.png',
-    name: 'ブランフォームトップ - 画像2',
     category: 'products',
     section: '製品 - ブランフォームトップ',
     uploadDate: new Date().toISOString(),
@@ -67,24 +49,6 @@ export const defaultImages: ImageItem[] = [
     isDefault: true
   },
   {
-    id: 'product-2-1',
-    url: '/images/bf1.png',
-    name: 'ブランフォーム - 画像1',
-    category: 'products',
-    section: '製品 - ブランフォーム',
-    uploadDate: new Date().toISOString(),
-    isDefault: true
-  },
-  {
-    id: 'product-2-2',
-    url: '/images/bf2.png',
-    name: 'ブランフォーム - 画像2',
-    category: 'products',
-    section: '製品 - ブランフォーム',
-    uploadDate: new Date().toISOString(),
-    isDefault: true
-  },
-  {
     id: 'product-2-3',
     url: '/images/bf3.png',
     name: 'ブランフォーム - 画像3',
@@ -98,24 +62,6 @@ export const defaultImages: ImageItem[] = [
     id: 'product-3',
     url: '/images/ブランフォームBIG.jpg',
     name: 'ブランフォームBIG - メイン',
-    category: 'products',
-    section: '製品 - ブランフォームBIG',
-    uploadDate: new Date().toISOString(),
-    isDefault: true
-  },
-  {
-    id: 'product-3-1',
-    url: '/images/bfBIG1.png',
-    name: 'ブランフォームBIG - 画像1',
-    category: 'products',
-    section: '製品 - ブランフォームBIG',
-    uploadDate: new Date().toISOString(),
-    isDefault: true
-  },
-  {
-    id: 'product-3-2',
-    url: '/images/bfBIG2.png',
-    name: 'ブランフォームBIG - 画像2',
     category: 'products',
     section: '製品 - ブランフォームBIG',
     uploadDate: new Date().toISOString(),
@@ -149,47 +95,11 @@ export const defaultImages: ImageItem[] = [
     uploadDate: new Date().toISOString(),
     isDefault: true
   },
-  {
-    id: 'product-4-1',
-    url: '/images/ecolopat1.png',
-    name: 'エコロパット - 画像1',
-    category: 'products',
-    section: '製品 - エコロパット',
-    uploadDate: new Date().toISOString(),
-    isDefault: true
-  },
-  {
-    id: 'product-4-2',
-    url: '/images/eclpat2.png',
-    name: 'エコロパット - 画像2',
-    category: 'products',
-    section: '製品 - エコロパット',
-    uploadDate: new Date().toISOString(),
-    isDefault: true
-  },
   // Product images - ブランフォームグリーン
   {
     id: 'product-5',
     url: '/images/ブランフォームグリーン.jpg',
     name: 'ブランフォームグリーン - メイン',
-    category: 'products',
-    section: '製品 - ブランフォームグリーン',
-    uploadDate: new Date().toISOString(),
-    isDefault: true
-  },
-  {
-    id: 'product-5-1',
-    url: '/images/bfg1.png',
-    name: 'ブランフォームグリーン - 画像1',
-    category: 'products',
-    section: '製品 - ブランフォームグリーン',
-    uploadDate: new Date().toISOString(),
-    isDefault: true
-  },
-  {
-    id: 'product-5-2',
-    url: '/images/bfg2.png',
-    name: 'ブランフォームグリーン - 画像2',
     category: 'products',
     section: '製品 - ブランフォームグリーン',
     uploadDate: new Date().toISOString(),
