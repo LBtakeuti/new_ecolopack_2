@@ -93,15 +93,31 @@ export default function ImageManager() {
 
   useEffect(() => {
     console.log('[ImageManager] Component mounted, initializing images');
-    const loadedImages = initializeImages();
-    console.log('[ImageManager] Loaded images:', loadedImages);
-    setImages(loadedImages);
+    
+    // 初期化を遅延実行して確実にloadできるようにする
+    const initializeAfterMount = () => {
+      const loadedImages = initializeImages();
+      console.log('[ImageManager] Loaded images count:', loadedImages.length);
+      console.log('[ImageManager] First few images:', loadedImages.slice(0, 3));
+      setImages(loadedImages);
+      
+      // 強制的にlocalStorageを確認・修正
+      if (loadedImages.length === 0) {
+        console.log('[ImageManager] No images loaded, forcing initialization');
+        localStorage.removeItem('siteImages');
+        const freshImages = initializeImages();
+        setImages(freshImages);
+      }
+    };
+    
+    // 短い遅延でDOM準備完了後に実行
+    setTimeout(initializeAfterMount, 100);
     
     // Listen for storage changes from other tabs
     const handleStorageChange = () => {
       console.log('[ImageManager] Storage/imagesUpdated event received');
       const loadedImages = initializeImages();
-      console.log('[ImageManager] Reloaded images:', loadedImages);
+      console.log('[ImageManager] Reloaded images:', loadedImages.length);
       setImages(loadedImages);
     };
     
@@ -388,6 +404,18 @@ export default function ImageManager() {
             <span className="text-sm text-gray-600">
               ストレージ使用量: {checkStorageUsage()} MB
             </span>
+            <button
+              onClick={() => {
+                // localStorageをクリアしてデフォルト画像で初期化
+                localStorage.removeItem('siteImages');
+                const freshImages = initializeImages();
+                setImages(freshImages);
+                alert('画像データを初期化しました');
+              }}
+              className="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700 transition-colors duration-200"
+            >
+              画像初期化
+            </button>
             <button
               onClick={() => {
                 console.log('[ImageManager] Test localStorage:', localStorage.getItem('siteImages'));

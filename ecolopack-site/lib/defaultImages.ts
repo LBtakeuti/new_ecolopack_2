@@ -197,7 +197,7 @@ export const defaultImages: ImageItem[] = [
   }
 ];
 
-export function initializeImages() {
+export function initializeImages(): ImageItem[] {
   // Check if we're on the client side
   if (typeof window === 'undefined') {
     console.log('[initializeImages] Server side, returning default images');
@@ -207,29 +207,31 @@ export function initializeImages() {
   try {
     console.log('[initializeImages] Client side, checking localStorage');
     const savedImages = localStorage.getItem('siteImages');
-    console.log('[initializeImages] Raw localStorage data:', savedImages);
+    console.log('[initializeImages] Raw localStorage data exists:', !!savedImages);
     
-    if (!savedImages) {
+    if (!savedImages || savedImages === 'undefined') {
       console.log('[initializeImages] No saved images, initializing with defaults');
       localStorage.setItem('siteImages', JSON.stringify(defaultImages));
       return defaultImages;
     }
     
-    // Merge default images with saved images
+    // Parse saved images
     const saved = JSON.parse(savedImages);
-    console.log('[initializeImages] Parsed saved images:', saved);
+    console.log('[initializeImages] Parsed saved images count:', saved.length);
     
-    const defaultIds = defaultImages.map(img => img.id);
-    const nonDefaultSaved = saved.filter((img: ImageItem) => !defaultIds.includes(img.id));
-    console.log('[initializeImages] Non-default saved images:', nonDefaultSaved);
-    
-    const merged = [...defaultImages, ...nonDefaultSaved];
-    console.log('[initializeImages] Merged images:', merged);
-    
-    localStorage.setItem('siteImages', JSON.stringify(merged));
-    return merged;
+    // If saved images exist, use them (but ensure default images are included)
+    if (Array.isArray(saved) && saved.length > 0) {
+      console.log('[initializeImages] Using saved images');
+      return saved;
+    } else {
+      console.log('[initializeImages] Saved images empty, using defaults');
+      localStorage.setItem('siteImages', JSON.stringify(defaultImages));
+      return defaultImages;
+    }
   } catch (error) {
     console.error('[initializeImages] Error initializing images:', error);
+    console.log('[initializeImages] Falling back to defaults');
+    localStorage.setItem('siteImages', JSON.stringify(defaultImages));
     return defaultImages;
   }
 }
