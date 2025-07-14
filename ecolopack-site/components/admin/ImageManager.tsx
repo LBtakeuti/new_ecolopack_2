@@ -306,18 +306,32 @@ export default function ImageManager() {
     try {
       console.log('[ImageManager] Starting upload process...');
       
-      // 製品画像の場合、適切なIDを生成
+      // 製品画像の場合、画像の順番を含むIDを生成
       let imageId = `upload-${Date.now()}`;
+      let imageOrder = 1; // デフォルトは1枚目
+      
       if (newImage.category === 'products' && newImage.section) {
+        // 同じセクションの既存画像数を数える
+        const existingProductImages = images.filter(img => 
+          img.section === newImage.section && img.category === 'products'
+        );
+        
+        // メイン画像（デフォルト画像）を除外して数える
+        const customImages = existingProductImages.filter(img => !img.isDefault);
+        imageOrder = customImages.length + 1;
+        
+        // 製品IDマップ
         const productIdMap: { [key: string]: string } = {
-          '製品 - ブランフォームトップ': 'product-1-custom',
-          '製品 - ブランフォーム': 'product-2-custom',
-          '製品 - ブランフォームBIG': 'product-3-custom',
-          '製品 - エコロパット': 'product-4-custom',
-          '製品 - ブランフォームグリーン': 'product-5-custom'
+          '製品 - ブランフォームトップ': 'product-1',
+          '製品 - ブランフォーム': 'product-2',
+          '製品 - ブランフォームBIG': 'product-3',
+          '製品 - エコロパット': 'product-4',
+          '製品 - ブランフォームグリーン': 'product-5'
         };
-        imageId = productIdMap[newImage.section] || imageId;
-        console.log('[ImageManager] Generated imageId for product:', imageId);
+        
+        const baseId = productIdMap[newImage.section] || 'product';
+        imageId = `${baseId}-image-${imageOrder}`;
+        console.log('[ImageManager] Generated imageId for product:', imageId, 'Order:', imageOrder);
       }
 
       const imageItem: ImageItem = {
@@ -337,23 +351,30 @@ export default function ImageManager() {
         urlLength: imageItem.url.length 
       });
 
-      // 同じIDまたはsectionの画像が既に存在する場合は置き換える
+      // 製品画像の場合は常に新規追加（複数画像を許可）
       let updatedImages;
-      const existingIndex = images.findIndex(img => 
-        (newImage.category === 'products' && img.section === newImage.section && !img.isDefault) ||
-        img.id === imageId
-      );
-      console.log('[ImageManager] Existing image index:', existingIndex);
       
-      if (existingIndex >= 0) {
-        // 既存の画像を置き換え
-        updatedImages = [...images];
-        updatedImages[existingIndex] = imageItem;
-        console.log('[ImageManager] Replacing existing image at index:', existingIndex);
-      } else {
-        // 新規追加
+      if (newImage.category === 'products' && newImage.section) {
+        // 製品画像は常に新規追加
         updatedImages = [...images, imageItem];
-        console.log('[ImageManager] Adding new image');
+        console.log('[ImageManager] Adding new product image, total images for this product:', 
+          updatedImages.filter(img => img.section === newImage.section).length);
+      } else {
+        // 製品以外の画像は既存のものを置き換える
+        const existingIndex = images.findIndex(img => 
+          img.category === newImage.category && img.id !== imageId && !img.isDefault
+        );
+        
+        if (existingIndex >= 0) {
+          // 既存の画像を置き換え
+          updatedImages = [...images];
+          updatedImages[existingIndex] = imageItem;
+          console.log('[ImageManager] Replacing existing non-product image at index:', existingIndex);
+        } else {
+          // 新規追加
+          updatedImages = [...images, imageItem];
+          console.log('[ImageManager] Adding new non-product image');
+        }
       }
       
       console.log('[ImageManager] Updated images count:', updatedImages.length);
@@ -740,104 +761,110 @@ export default function ImageManager() {
             { name: 'ブランフォームBIG', section: '製品 - ブランフォームBIG', id: 'product-3' },
             { name: 'エコロパット', section: '製品 - エコロパット', id: 'product-4' },
             { name: 'ブランフォームグリーン', section: '製品 - ブランフォームグリーン', id: 'product-5' }
-          ].map((product) => (
-            <div key={product.section}>
-              <h4 className="text-sm font-medium text-gray-700 mb-2">{product.name}</h4>
-              <div className="relative h-32 bg-gray-100 rounded-md overflow-hidden group cursor-pointer hover:ring-2 hover:ring-primary transition-all duration-200">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={async (e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      setIsUploading(true);
-                      try {
-                        const resizedBase64 = await resizeImage(file, 1200, 1200);
-                        
-                        // 既存の画像を更新または新規作成
-                        const existingImage = images.find(img => 
-                          img.section === product.section && !img.isDefault
-                        );
-                        
-                        if (existingImage) {
-                          handleUpdate(existingImage.id, { url: resizedBase64 });
-                        } else {
-                          const newProductImage: ImageItem = {
-                            id: `${product.id}-custom`,
-                            url: resizedBase64,
-                            name: product.name,
-                            category: 'products',
-                            section: product.section,
-                            uploadDate: new Date().toISOString()
-                          };
-                          const updatedImages = [...images, newProductImage];
-                          setImages(updatedImages);
-                          localStorage.setItem('siteImages', JSON.stringify(updatedImages));
-                          window.dispatchEvent(new Event('imagesUpdated'));
-                        }
-                      } catch (error) {
-                        console.error('Error updating product image:', error);
-                        alert('画像の更新中にエラーが発生しました');
-                      } finally {
-                        setIsUploading(false);
-                      }
-                    }
-                  }}
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                />
-                {(() => {
-                  const productImage = images.find(img => img.section === product.section);
-                  if (productImage) {
-                    return (
-                      <>
-                        <Image src={productImage.url} alt={product.name} fill className="object-cover" />
-                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-200 flex items-center justify-center">
+          ].map((product) => {
+            // 各製品の全画像を取得
+            const productImages = images.filter(img => img.section === product.section);
+            const defaultImages = productImages.filter(img => img.isDefault);
+            const customImages = productImages.filter(img => !img.isDefault);
+            
+            // カスタム画像をID順でソート
+            customImages.sort((a, b) => {
+              const aMatch = a.id.match(/image-(\d+)$/);
+              const bMatch = b.id.match(/image-(\d+)$/);
+              if (aMatch && bMatch) {
+                return parseInt(aMatch[1]) - parseInt(bMatch[1]);
+              }
+              return a.id.localeCompare(b.id);
+            });
+            
+            const allProductImages = [...defaultImages, ...customImages];
+            
+            return (
+              <div key={product.section} className="col-span-full">
+                <h4 className="text-sm font-medium text-gray-700 mb-2">{product.name}</h4>
+                <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
+                  {/* 既存の画像を表示 */}
+                  {allProductImages.map((image, index) => (
+                    <div key={image.id} className="relative">
+                      <div className="relative h-24 bg-gray-100 rounded-md overflow-hidden group cursor-pointer hover:ring-2 hover:ring-primary transition-all duration-200">
+                        <Image src={image.url} alt={`${product.name} - ${index + 1}`} fill className="object-cover" />
+                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-200 flex items-center justify-center">
                           <div className="text-center">
-                            <p className="text-white opacity-0 group-hover:opacity-100 font-medium text-sm">クリックして変更</p>
-                            {!productImage.isDefault && (
+                            <p className="text-white opacity-0 group-hover:opacity-100 text-xs font-medium">
+                              {image.isDefault ? 'デフォルト' : `画像${index + 1}`}
+                            </p>
+                            {!image.isDefault && (
                               <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleDelete(productImage.id);
-                                }}
-                                className="mt-2 text-red-400 hover:text-red-300 text-xs opacity-0 group-hover:opacity-100"
+                                onClick={() => handleDelete(image.id)}
+                                className="mt-1 text-red-400 hover:text-red-300 text-xs opacity-0 group-hover:opacity-100"
                               >
                                 削除
                               </button>
                             )}
                           </div>
                         </div>
-                      </>
-                    );
-                  }
-                  // デフォルト画像を探す
-                  const defaultImage = images.find(img => 
-                    img.isDefault && img.name.includes(product.name)
-                  );
-                  if (defaultImage) {
-                    return (
-                      <>
-                        <Image src={defaultImage.url} alt={product.name} fill className="object-cover" />
-                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-200 flex items-center justify-center">
-                          <p className="text-white opacity-0 group-hover:opacity-100 font-medium text-sm">クリックして変更</p>
-                        </div>
-                      </>
-                    );
-                  }
-                  return (
-                    <div className="w-full h-full flex items-center justify-center text-gray-400">
-                      <div className="text-center">
-                        <svg className="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                        </svg>
-                        <span className="text-sm">クリックして追加</span>
                       </div>
                     </div>
-                  );
-                })()}
+                  ))}
+                  
+                  {/* 新規画像追加ボタン */}
+                  <div className="relative">
+                    <div className="relative h-24 bg-gray-100 rounded-md overflow-hidden group cursor-pointer hover:ring-2 hover:ring-primary transition-all duration-200 border-2 border-dashed border-gray-300">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            setIsUploading(true);
+                            try {
+                              const resizedBase64 = await resizeImage(file, 1200, 1200);
+                              
+                              // 新規画像として追加
+                              const imageOrder = customImages.length + 1;
+                              const newProductImage: ImageItem = {
+                                id: `${product.id}-image-${imageOrder}`,
+                                url: resizedBase64,
+                                name: `${product.name} - 画像${imageOrder}`,
+                                category: 'products',
+                                section: product.section,
+                                uploadDate: new Date().toISOString()
+                              };
+                              
+                              const updatedImages = [...images, newProductImage];
+                              setImages(updatedImages);
+                              localStorage.setItem('siteImages', JSON.stringify(updatedImages));
+                              
+                              setTimeout(() => {
+                                window.dispatchEvent(new Event('imagesUpdated'));
+                              }, 100);
+                              
+                              alert(`${product.name}に画像を追加しました`);
+                            } catch (error) {
+                              console.error('Error adding product image:', error);
+                              alert('画像の追加中にエラーが発生しました');
+                            } finally {
+                              setIsUploading(false);
+                              e.target.value = ''; // Reset input
+                            }
+                          }
+                        }}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                      />
+                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                        <div className="text-center">
+                          <svg className="w-6 h-6 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                          </svg>
+                          <span className="text-xs">追加</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

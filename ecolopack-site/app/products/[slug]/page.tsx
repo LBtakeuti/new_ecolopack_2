@@ -221,9 +221,27 @@ export default function ProductDetail({ params }: { params: Promise<{ slug: stri
     );
     
     if (updatedImages.length > 0) {
-      return updatedImages.map(img => img.url);
+      // デフォルト画像とカスタム画像を分ける
+      const defaultImages = updatedImages.filter(img => img.isDefault);
+      const customImages = updatedImages.filter(img => !img.isDefault);
+      
+      // カスタム画像をID順でソート（image-1, image-2, ...の順番を保証）
+      customImages.sort((a, b) => {
+        const aMatch = a.id.match(/image-(\d+)$/);
+        const bMatch = b.id.match(/image-(\d+)$/);
+        if (aMatch && bMatch) {
+          return parseInt(aMatch[1]) - parseInt(bMatch[1]);
+        }
+        return a.id.localeCompare(b.id);
+      });
+      
+      // デフォルト画像 + カスタム画像の順で返す
+      const allImages = [...defaultImages, ...customImages];
+      return allImages.map(img => img.url);
     }
-    return product.images;
+    
+    // カスタム画像がない場合はデフォルトのハードコードされた画像を使用
+    return [product.image, ...product.images];
   };
   
   const displayImages = getProductImages();
