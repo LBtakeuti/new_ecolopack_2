@@ -39,6 +39,15 @@ export const defaultImages: ImageItem[] = [
     isDefault: true
   },
   {
+    id: 'product-1-2',
+    url: '/images/bfTOP2.png',
+    name: 'ブランフォームトップ - 画像2',
+    category: 'products',
+    section: '製品 - ブランフォームトップ',
+    uploadDate: new Date().toISOString(),
+    isDefault: true
+  },
+  {
     id: 'product-1-3',
     url: '/images/bfTOP3.png',
     name: 'ブランフォームトップ - 画像3',
@@ -67,6 +76,15 @@ export const defaultImages: ImageItem[] = [
     isDefault: true
   },
   {
+    id: 'product-2-2',
+    url: '/images/bf2.png',
+    name: 'ブランフォーム - 画像2',
+    category: 'products',
+    section: '製品 - ブランフォーム',
+    uploadDate: new Date().toISOString(),
+    isDefault: true
+  },
+  {
     id: 'product-2-3',
     url: '/images/bf3.png',
     name: 'ブランフォーム - 画像3',
@@ -89,6 +107,15 @@ export const defaultImages: ImageItem[] = [
     id: 'product-3-1',
     url: '/images/bfBIG1.png',
     name: 'ブランフォームBIG - 画像1',
+    category: 'products',
+    section: '製品 - ブランフォームBIG',
+    uploadDate: new Date().toISOString(),
+    isDefault: true
+  },
+  {
+    id: 'product-3-2',
+    url: '/images/bfBIG2.png',
+    name: 'ブランフォームBIG - 画像2',
     category: 'products',
     section: '製品 - ブランフォームBIG',
     uploadDate: new Date().toISOString(),
@@ -131,6 +158,15 @@ export const defaultImages: ImageItem[] = [
     uploadDate: new Date().toISOString(),
     isDefault: true
   },
+  {
+    id: 'product-4-2',
+    url: '/images/eclpat2.png',
+    name: 'エコロパット - 画像2',
+    category: 'products',
+    section: '製品 - エコロパット',
+    uploadDate: new Date().toISOString(),
+    isDefault: true
+  },
   // Product images - ブランフォームグリーン
   {
     id: 'product-5',
@@ -145,6 +181,15 @@ export const defaultImages: ImageItem[] = [
     id: 'product-5-1',
     url: '/images/bfg1.png',
     name: 'ブランフォームグリーン - 画像1',
+    category: 'products',
+    section: '製品 - ブランフォームグリーン',
+    uploadDate: new Date().toISOString(),
+    isDefault: true
+  },
+  {
+    id: 'product-5-2',
+    url: '/images/bfg2.png',
+    name: 'ブランフォームグリーン - 画像2',
     category: 'products',
     section: '製品 - ブランフォームグリーン',
     uploadDate: new Date().toISOString(),
@@ -174,10 +219,31 @@ export function initializeImages(): ImageItem[] {
     const saved = JSON.parse(savedImages);
     console.log('[initializeImages] Parsed saved images count:', saved.length);
     
-    // If saved images exist, use them (but ensure default images are included)
+    // If saved images exist, merge with defaults to ensure all default images are present
     if (Array.isArray(saved) && saved.length > 0) {
-      console.log('[initializeImages] Using saved images');
-      return saved;
+      console.log('[initializeImages] Merging saved images with defaults');
+      
+      // Create a map of saved images by ID for quick lookup
+      const savedMap = new Map(saved.map(img => [img.id, img]));
+      
+      // Start with all default images
+      const mergedImages = defaultImages.map(defaultImg => {
+        // If a saved version exists, use it (preserving any custom edits)
+        const savedVersion = savedMap.get(defaultImg.id);
+        if (savedVersion && savedVersion.isDefault) {
+          // For default images, always use the latest URL from defaultImages
+          return { ...savedVersion, url: defaultImg.url };
+        }
+        return defaultImg;
+      });
+      
+      // Add any custom (non-default) images from saved
+      const customImages = saved.filter(img => !img.isDefault && !defaultImages.find(d => d.id === img.id));
+      const finalImages = [...mergedImages, ...customImages];
+      
+      console.log('[initializeImages] Final merged images count:', finalImages.length);
+      localStorage.setItem('siteImages', JSON.stringify(finalImages));
+      return finalImages;
     } else {
       console.log('[initializeImages] Saved images empty, using defaults');
       localStorage.setItem('siteImages', JSON.stringify(defaultImages));
