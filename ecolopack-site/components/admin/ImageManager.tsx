@@ -793,22 +793,29 @@ export default function ImageManager() {
               />
               {(() => {
                 const heroImage = images.find(img => img.category === 'hero');
-                return heroImage ? (
+                const defaultHeroImage = 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2671&auto=format&fit=crop';
+                const displayImage = heroImage ? heroImage.url : defaultHeroImage;
+                
+                return (
                   <>
-                    <Image src={heroImage.url} alt="Hero" fill className="object-cover" />
+                    <Image 
+                      src={displayImage} 
+                      alt="Hero" 
+                      fill 
+                      className="object-cover" 
+                      unoptimized={displayImage.startsWith('data:')}
+                    />
                     <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-200 flex items-center justify-center">
-                      <p className="text-white opacity-0 group-hover:opacity-100 font-medium text-sm">クリックして変更</p>
+                      <p className="text-white opacity-0 group-hover:opacity-100 font-medium text-sm">
+                        {heroImage ? 'クリックして変更' : 'クリックしてカスタム画像を追加'}
+                      </p>
                     </div>
+                    {!heroImage && (
+                      <div className="absolute top-2 right-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded">
+                        デフォルト
+                      </div>
+                    )}
                   </>
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-gray-400">
-                    <div className="text-center">
-                      <svg className="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                      </svg>
-                      <span className="text-sm">クリックして追加</span>
-                    </div>
-                  </div>
                 );
               })()}
             </div>
@@ -816,11 +823,11 @@ export default function ImageManager() {
           
           {/* 製品画像プレビュー */}
           {[
-            { name: 'ブランフォームトップ', section: '製品 - ブランフォームトップ', id: 'product-1' },
-            { name: 'ブランフォーム', section: '製品 - ブランフォーム', id: 'product-2' },
-            { name: 'ブランフォームBIG', section: '製品 - ブランフォームBIG', id: 'product-3' },
-            { name: 'エコロパット', section: '製品 - エコロパット', id: 'product-4' },
-            { name: 'ブランフォームグリーン', section: '製品 - ブランフォームグリーン', id: 'product-5' }
+            { name: 'ブランフォームトップ', section: '製品 - ブランフォームトップ', id: 'product-1', defaultImage: '/images/ブランフォームトップ.jpg' },
+            { name: 'ブランフォーム', section: '製品 - ブランフォーム', id: 'product-2', defaultImage: '/images/ブランフォーム.jpg' },
+            { name: 'ブランフォームBIG', section: '製品 - ブランフォームBIG', id: 'product-3', defaultImage: '/images/ブランフォームBIG.jpg' },
+            { name: 'エコロパット', section: '製品 - エコロパット', id: 'product-4', defaultImage: '/images/エコロパット.jpg' },
+            { name: 'ブランフォームグリーン', section: '製品 - ブランフォームグリーン', id: 'product-5', defaultImage: '/images/ブランフォームグリーン.jpg' }
           ].map((product) => {
             // 各製品の全画像を取得
             const productImages = images.filter(img => img.section === product.section);
@@ -837,7 +844,11 @@ export default function ImageManager() {
               return a.id.localeCompare(b.id);
             });
             
+            // デフォルト画像とカスタム画像を組み合わせ
             const allProductImages = [...defaultImages, ...customImages];
+            
+            // メイン表示画像を決定（カスタム画像があればそれを、なければデフォルト）
+            const mainDisplayImage = allProductImages.length > 0 ? allProductImages[0] : null;
             
             return (
               <div key={product.section} className="col-span-full">
@@ -872,15 +883,38 @@ export default function ImageManager() {
                   </div>
                 </div>
                 <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
-                  {/* 既存の画像を表示 */}
-                  {allProductImages.map((image, index) => (
+                  {/* メイン画像（現在サイトで表示されている画像）を表示 */}
+                  <div className="relative">
+                    <div className="relative h-24 bg-gray-100 rounded-md overflow-hidden group cursor-pointer hover:ring-2 hover:ring-primary transition-all duration-200 border-2 border-green-500">
+                      <Image 
+                        src={mainDisplayImage ? mainDisplayImage.url : product.defaultImage} 
+                        alt={`${product.name} - メイン`} 
+                        fill 
+                        className="object-cover"
+                        unoptimized={(mainDisplayImage ? mainDisplayImage.url : product.defaultImage).startsWith('data:')}
+                      />
+                      <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-200 flex items-center justify-center">
+                        <p className="text-white opacity-0 group-hover:opacity-100 text-xs font-medium">
+                          サイト表示中
+                        </p>
+                      </div>
+                      {!mainDisplayImage && (
+                        <div className="absolute top-1 right-1 bg-yellow-500 text-white text-xs px-1 py-0.5 rounded text-[10px]">
+                          デフォルト
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {/* その他の画像を表示 */}
+                  {allProductImages.slice(1).map((image, index) => (
                     <div key={image.id} className="relative">
                       <div className="relative h-24 bg-gray-100 rounded-md overflow-hidden group cursor-pointer hover:ring-2 hover:ring-primary transition-all duration-200">
-                        <Image src={image.url} alt={`${product.name} - ${index + 1}`} fill className="object-cover" />
+                        <Image src={image.url} alt={`${product.name} - ${index + 2}`} fill className="object-cover" />
                         <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-200 flex items-center justify-center">
                           <div className="text-center">
                             <p className="text-white opacity-0 group-hover:opacity-100 text-xs font-medium">
-                              {image.isDefault ? 'デフォルト' : `画像${index + 1}`}
+                              画像{index + 2}
                             </p>
                             {!image.isDefault && (
                               <button
