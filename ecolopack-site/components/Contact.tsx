@@ -52,57 +52,69 @@ export default function Contact() {
             <div className="bg-white rounded-lg p-8 text-center" style={{ boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
               <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: 'rgba(162, 210, 151, 0.1)' }}>
                 <svg className="w-8 h-8" style={{ color: '#A2D297' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
               <h3 className="text-xl font-semibold mb-3" style={{ color: '#A2D297' }}>
-                E-mail
+                所在地
               </h3>
-              <a 
-                href="mailto:ecolopack@ho.noble-j.co.jp"
-                className="text-sm leading-relaxed hover:text-primary transition-colors duration-200"
-                style={{ color: '#666666' }}
-              >
-                ecolopack@ho.noble-j.co.jp
-              </a>
+              <div className="text-sm leading-relaxed" style={{ color: '#666666' }}>
+                <p className="font-semibold mb-1">本社</p>
+                <p className="mb-3">川崎市中原区苅宿45-1</p>
+                <p className="font-semibold mb-1">さいたま工場</p>
+                <p>埼玉県さいたま市岩槻区上野4-6-10</p>
+              </div>
             </div>
           </div>
           
           <div className="mt-12 bg-white rounded-lg p-8" style={{ boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
             <h3 className="text-2xl font-bold text-center mb-6" style={{ color: '#333333' }}>
-              お気軽にお電話ください
+              お気軽にお問い合わせください
             </h3>
-            <div className="text-center">
-              <a 
-                href="tel:044-433-2065"
-                className="inline-flex items-center text-white font-bold text-xl px-8 py-4 rounded-full transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
-                style={{ backgroundColor: '#A2D297' }}
-                onMouseEnter={(e) => { 
-                  e.currentTarget.style.backgroundColor = '#8BB580'; 
-                }}
-                onMouseLeave={(e) => { 
-                  e.currentTarget.style.backgroundColor = '#A2D297'; 
-                }}
-              >
-                <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-                044-433-2065
-              </a>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="text-center">
+                <a 
+                  href="tel:044-433-2065"
+                  className="inline-flex items-center text-white font-bold text-xl px-8 py-4 rounded-full transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                  style={{ backgroundColor: '#A2D297' }}
+                  onMouseEnter={(e) => { 
+                    e.currentTarget.style.backgroundColor = '#8BB580'; 
+                  }}
+                  onMouseLeave={(e) => { 
+                    e.currentTarget.style.backgroundColor = '#A2D297'; 
+                  }}
+                >
+                  <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
+                  044-433-2065
+                </a>
+              </div>
+              <div className="text-center">
+                <a 
+                  href="mailto:ecolopack@ho.noble-j.co.jp"
+                  className="inline-flex items-center text-white font-bold text-xl px-8 py-4 rounded-full transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                  style={{ backgroundColor: '#A2D297' }}
+                  onMouseEnter={(e) => { 
+                    e.currentTarget.style.backgroundColor = '#8BB580'; 
+                  }}
+                  onMouseLeave={(e) => { 
+                    e.currentTarget.style.backgroundColor = '#A2D297'; 
+                  }}
+                >
+                  <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  メールでお問い合わせ
+                </a>
+              </div>
             </div>
-            <p className="text-center mt-4" style={{ color: '#666666' }}>
+            <p className="text-center mt-6" style={{ color: '#666666' }}>
               製品のご質問、お見積り、技術的なお問い合わせまで、専門スタッフが丁寧にお答えいたします。
             </p>
-            <div className="text-center mt-6">
-              <a 
-                href="mailto:ecolopack@ho.noble-j.co.jp"
-                className="inline-flex items-center text-primary font-semibold px-6 py-3 border-2 border-primary rounded-full transition-all duration-300 hover:bg-primary hover:text-white"
-              >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                メールでお問い合わせ
-              </a>
+            <div className="text-center mt-4" style={{ color: '#666666' }}>
+              <p className="mb-1">E-mail: <a href="mailto:ecolopack@ho.noble-j.co.jp" className="hover:text-primary transition-colors">ecolopack@ho.noble-j.co.jp</a></p>
             </div>
           </div>
         </div>
