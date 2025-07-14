@@ -150,6 +150,14 @@ export default function ImageManager() {
       const loadedImages = initializeImages();
       console.log('[ImageManager] Loaded images count:', loadedImages.length);
       console.log('[ImageManager] First few images:', loadedImages.slice(0, 3));
+      
+      // 画像URLをチェック
+      loadedImages.forEach((img, index) => {
+        if (index < 5) {
+          console.log(`[ImageManager] Image ${index}: ${img.name}, URL: ${img.url?.substring(0, 50)}...`);
+        }
+      });
+      
       setImages(loadedImages);
       
       // 強制的にlocalStorageを確認・修正
@@ -480,13 +488,19 @@ export default function ImageManager() {
     : images.filter(img => img.category === selectedCategory);
 
   const renderImagePreview = (url: string, name: string, imageId?: string) => {
-    if (url.startsWith('data:') || url.startsWith('http') || url.startsWith('/images/')) {
+    if (url && (url.startsWith('data:') || url.startsWith('http') || url.startsWith('/images/'))) {
       return (
         <Image
           src={url}
           alt={name}
           fill
           className="object-cover"
+          unoptimized={url.startsWith('data:')}
+          priority={false}
+          onError={(e) => {
+            console.error('[ImageManager] Image load error:', url);
+            (e.target as HTMLImageElement).style.display = 'none';
+          }}
         />
       );
     } else {
@@ -536,11 +550,20 @@ export default function ImageManager() {
             </span>
             <button
               onClick={() => {
+                console.log('[ImageManager] Force initializing images...');
                 // localStorageをクリアしてデフォルト画像で初期化
                 localStorage.removeItem('siteImages');
                 const freshImages = initializeImages();
+                console.log('[ImageManager] Fresh images loaded:', freshImages.length);
+                console.log('[ImageManager] Sample image:', freshImages[0]);
                 setImages(freshImages);
-                alert('画像データを初期化しました。全ての製品画像が読み込まれました。');
+                
+                // 強制的にリロード
+                setTimeout(() => {
+                  window.location.reload();
+                }, 100);
+                
+                alert('画像データを初期化しました。ページが再読み込みされます。');
               }}
               className="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700 transition-colors duration-200 flex items-center gap-2"
             >
