@@ -1,8 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import ImageManager from '@/components/admin/ImageManager';
+
+const ImageManagerSupabase = dynamic(
+  () => import('@/components/admin/ImageManagerSupabase'),
+  { ssr: false }
+);
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -102,7 +108,28 @@ export default function AdminPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <ImageManager />
+        {process.env.NEXT_PUBLIC_SUPABASE_URL && 
+         process.env.NEXT_PUBLIC_SUPABASE_URL !== 'your_supabase_project_url' ? (
+          <div>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+              <p className="text-blue-800">
+                Supabaseモードで動作中 - 画像はクラウドデータベースで管理されています
+              </p>
+            </div>
+            <Suspense fallback={<div>読み込み中...</div>}>
+              <ImageManagerSupabase />
+            </Suspense>
+          </div>
+        ) : (
+          <div>
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+              <p className="text-yellow-800">
+                ローカルモードで動作中 - Supabaseを設定するには SUPABASE_SETUP.md を参照してください
+              </p>
+            </div>
+            <ImageManager />
+          </div>
+        )}
       </div>
     </div>
   );

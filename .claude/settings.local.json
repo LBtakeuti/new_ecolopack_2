@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)",
+      "Bash(npx create-next-app:*)",
+      "Bash(npx:*)",
+      "Bash(npm install:*)",
+      "Bash(cat:*)",
+      "Bash(npm run dev:*)",
+      "Bash(curl:*)",
+      "Bash(kill:*)",
+      "Bash(mv:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(git add:*)",
+      "Bash(npm run build:*)"
+    ],
+    "deny": []
+  }
+}
