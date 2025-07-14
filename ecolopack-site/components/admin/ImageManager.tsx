@@ -624,7 +624,7 @@ export default function ImageManager() {
               </div>
               <div className="p-4">
                 <h3 className="font-medium text-gray-900 mb-1">{image.name}</h3>
-                <div className="flex gap-2 mb-2">
+                <div className="flex gap-2 mb-2 flex-wrap">
                   {image.isDefault && (
                     <span className="inline-block px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded">
                       デフォルト画像
@@ -632,9 +632,36 @@ export default function ImageManager() {
                   )}
                   {image.section && (
                     <span className="inline-block px-2 py-1 text-xs bg-green-100 text-green-800 rounded">
-                      使用中
+                      サイト掲載中
                     </span>
                   )}
+                  {(() => {
+                    // 実際にサイトで表示されているかチェック
+                    if (image.category === 'hero') {
+                      return (
+                        <span className="inline-block px-2 py-1 text-xs bg-yellow-100 text-yellow-800 rounded">
+                          トップページ
+                        </span>
+                      );
+                    } else if (image.category === 'products' && image.section) {
+                      const productMap: { [key: string]: string } = {
+                        '製品 - ブランフォームトップ': 'ブランフォームトップページ',
+                        '製品 - ブランフォーム': 'ブランフォームページ',
+                        '製品 - ブランフォームBIG': 'ブランフォームBIGページ',
+                        '製品 - エコロパット': 'エコロパットページ',
+                        '製品 - ブランフォームグリーン': 'ブランフォームグリーンページ'
+                      };
+                      const pageName = productMap[image.section];
+                      if (pageName) {
+                        return (
+                          <span className="inline-block px-2 py-1 text-xs bg-purple-100 text-purple-800 rounded">
+                            {pageName}
+                          </span>
+                        );
+                      }
+                    }
+                    return null;
+                  })()}
                 </div>
                 <p className="text-sm text-gray-500 mb-1">
                   カテゴリー: {categories.find(c => c.value === image.category)?.label}
@@ -686,10 +713,43 @@ export default function ImageManager() {
         )}
       </div>
 
-      {/* 現在のサイト表示プレビュー */}
+      {/* 現在のサイト表示状態 */}
       <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-        <h3 className="text-lg font-bold text-gray-900 mb-4">現在のサイト表示プレビュー</h3>
-        <p className="text-sm text-gray-600 mb-4">画像をクリックして変更・削除できます</p>
+        <div className="mb-6">
+          <h3 className="text-lg font-bold text-gray-900 mb-2">現在のサイト表示状態</h3>
+          <p className="text-sm text-gray-600">実際にサイトに表示されている画像の一覧です。画像をクリックして変更・削除できます。</p>
+        </div>
+        
+        {/* サイト表示画像のサマリー */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+          <h4 className="text-sm font-semibold text-blue-900 mb-2">📸 サイト掲載画像サマリー</h4>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+            <div>
+              <span className="text-gray-600">ヒーロー画像:</span>
+              <span className="ml-2 font-medium">
+                {images.filter(img => img.category === 'hero').length}枚
+              </span>
+            </div>
+            {[
+              { name: 'ブランフォームトップ', section: '製品 - ブランフォームトップ' },
+              { name: 'ブランフォーム', section: '製品 - ブランフォーム' },
+              { name: 'ブランフォームBIG', section: '製品 - ブランフォームBIG' },
+              { name: 'エコロパット', section: '製品 - エコロパット' },
+              { name: 'ブランフォームグリーン', section: '製品 - ブランフォームグリーン' }
+            ].map((product) => {
+              const count = images.filter(img => img.section === product.section).length;
+              return (
+                <div key={product.section}>
+                  <span className="text-gray-600">{product.name}:</span>
+                  <span className={`ml-2 font-medium ${count > 0 ? 'text-green-600' : 'text-gray-400'}`}>
+                    {count}枚
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* ヒーロー画像 */}
           <div>
@@ -781,7 +841,36 @@ export default function ImageManager() {
             
             return (
               <div key={product.section} className="col-span-full">
-                <h4 className="text-sm font-medium text-gray-700 mb-2">{product.name}</h4>
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-sm font-medium text-gray-700">{product.name}</h4>
+                  <div className="flex items-center gap-2">
+                    <span className={`text-xs px-2 py-1 rounded ${allProductImages.length > 0 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                      {allProductImages.length > 0 ? '✓ サイト掲載中' : '未掲載'}
+                    </span>
+                    {allProductImages.length > 0 && (
+                      <a
+                        href={`/products/${(() => {
+                          const urlMap: { [key: string]: string } = {
+                            'product-1': 'blan-form-top',
+                            'product-2': 'blan-form',
+                            'product-3': 'blan-form-big',
+                            'product-4': 'ecolopat',
+                            'product-5': 'blan-form-green'
+                          };
+                          return urlMap[product.id] || '';
+                        })()}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                      >
+                        サイトで確認
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                      </a>
+                    )}
+                  </div>
+                </div>
                 <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
                   {/* 既存の画像を表示 */}
                   {allProductImages.map((image, index) => (
