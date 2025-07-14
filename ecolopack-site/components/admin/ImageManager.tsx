@@ -540,10 +540,13 @@ export default function ImageManager() {
                 localStorage.removeItem('siteImages');
                 const freshImages = initializeImages();
                 setImages(freshImages);
-                alert('画像データを初期化しました');
+                alert('画像データを初期化しました。全ての製品画像が読み込まれました。');
               }}
-              className="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700 transition-colors duration-200"
+              className="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700 transition-colors duration-200 flex items-center gap-2"
             >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
               画像初期化
             </button>
             <button
