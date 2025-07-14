@@ -7,46 +7,97 @@ import { ImageItem, initializeImages } from '@/lib/defaultImages';
 // Resize image to reduce file size for localStorage
 const resizeImage = (file: File, maxWidth: number, maxHeight: number): Promise<string> => {
   return new Promise((resolve, reject) => {
+    console.log('[resizeImage] Starting resize for file:', file.name, 'Size:', file.size);
+    
     const reader = new FileReader();
     reader.onload = (e) => {
+      console.log('[resizeImage] FileReader loaded');
+      
+      if (!e.target?.result) {
+        reject(new Error('ファイルの読み込みに失敗しました'));
+        return;
+      }
+
       const img = new window.Image();
       img.onload = () => {
-        const canvas = document.createElement('canvas');
-        let width = img.width;
-        let height = img.height;
-
-        if (width > height) {
-          if (width > maxWidth) {
-            height = height * (maxWidth / width);
-            width = maxWidth;
-          }
-        } else {
-          if (height > maxHeight) {
-            width = width * (maxHeight / height);
-            height = maxHeight;
-          }
-        }
-
-        canvas.width = width;
-        canvas.height = height;
-
-        const ctx = canvas.getContext('2d');
-        if (!ctx) {
-          reject(new Error('Failed to get canvas context'));
-          return;
-        }
-
-        ctx.drawImage(img, 0, 0, width, height);
+        console.log('[resizeImage] Image loaded, original dimensions:', img.width, 'x', img.height);
         
-        // Convert to base64 with compression
-        const base64 = canvas.toDataURL('image/jpeg', 0.8);
-        resolve(base64);
+        try {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+
+          // Calculate new dimensions while maintaining aspect ratio
+          if (width > height) {
+            if (width > maxWidth) {
+              height = Math.round(height * (maxWidth / width));
+              width = maxWidth;
+            }
+          } else {
+            if (height > maxHeight) {
+              width = Math.round(width * (maxHeight / height));
+              height = maxHeight;
+            }
+          }
+
+          console.log('[resizeImage] New dimensions:', width, 'x', height);
+
+          canvas.width = width;
+          canvas.height = height;
+
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            reject(new Error('Canvas context の取得に失敗しました'));
+            return;
+          }
+
+          // Draw image on canvas
+          ctx.drawImage(img, 0, 0, width, height);
+          
+          // Try different quality levels to optimize size
+          let quality = 0.8;
+          let base64 = canvas.toDataURL('image/jpeg', quality);
+          
+          // If still too large, reduce quality
+          while (base64.length > 2 * 1024 * 1024 && quality > 0.3) {
+            quality -= 0.1;
+            base64 = canvas.toDataURL('image/jpeg', quality);
+            console.log('[resizeImage] Trying quality:', quality, 'Size:', (base64.length / (1024 * 1024)).toFixed(2), 'MB');
+          }
+          
+          console.log('[resizeImage] Final image quality:', quality, 'Size:', (base64.length / (1024 * 1024)).toFixed(2), 'MB');
+          
+          if (!base64 || !base64.startsWith('data:image/')) {
+            reject(new Error('画像の変換に失敗しました'));
+            return;
+          }
+          
+          resolve(base64);
+        } catch (canvasError) {
+          console.error('[resizeImage] Canvas error:', canvasError);
+          reject(new Error('画像の処理中にエラーが発生しました: ' + (canvasError as Error).message));
+        }
       };
-      img.onerror = () => reject(new Error('Failed to load image'));
-      img.src = e.target?.result as string;
+      
+      img.onerror = (error) => {
+        console.error('[resizeImage] Image load error:', error);
+        reject(new Error('画像の読み込みに失敗しました。ファイルが破損している可能性があります。'));
+      };
+      
+      img.src = e.target.result as string;
     };
-    reader.onerror = () => reject(new Error('Failed to read file'));
-    reader.readAsDataURL(file);
+    
+    reader.onerror = (error) => {
+      console.error('[resizeImage] FileReader error:', error);
+      reject(new Error('ファイルの読み込みに失敗しました'));
+    };
+    
+    try {
+      reader.readAsDataURL(file);
+    } catch (readerError) {
+      console.error('[resizeImage] Reader start error:', readerError);
+      reject(new Error('ファイルの読み込み開始に失敗しました'));
+    }
   });
 };
 
@@ -133,23 +184,45 @@ export default function ImageManager() {
   const processFile = async (file: File, isEdit: boolean = false) => {
     console.log('[ImageManager] processFile called:', { fileName: file.name, fileSize: file.size, fileType: file.type });
     
-    // Validate file type
+    // Enhanced file validation
+    if (!file) {
+      alert('ファイルが選択されていません');
+      return;
+    }
+
     if (!file.type.startsWith('image/')) {
-      alert('画像ファイルを選択してください');
+      alert('画像ファイル（JPG、PNG、GIF等）を選択してください。選択されたファイル: ' + file.type);
+      return;
+    }
+
+    // Check file size (before processing)
+    const maxFileSize = 50 * 1024 * 1024; // 50MB
+    if (file.size > maxFileSize) {
+      alert('ファイルサイズが大きすぎます（最大50MB）。より小さいファイルを選択してください。');
       return;
     }
 
     setIsUploading(true);
     try {
+      console.log('[ImageManager] Starting image processing...');
+      
       // Resize image to reduce file size for localStorage
       console.log('[ImageManager] Resizing image...');
       const resizedBase64 = await resizeImage(file, 1200, 1200);
       console.log('[ImageManager] Resized image length:', resizedBase64.length);
       console.log('[ImageManager] Resized image preview:', resizedBase64.substring(0, 100) + '...');
       
+      // Validate base64 result
+      if (!resizedBase64 || !resizedBase64.startsWith('data:image/')) {
+        throw new Error('画像の変換に失敗しました');
+      }
+      
       // Check if resized image is still too large (localStorage typically has 5-10MB limit)
-      if (resizedBase64.length > 2 * 1024 * 1024) { // 2MB limit for safety
-        alert('画像のファイルサイズが大きすぎます。より小さい画像を選択してください。');
+      const sizeInMB = (resizedBase64.length / (1024 * 1024)).toFixed(2);
+      console.log('[ImageManager] Resized image size:', sizeInMB, 'MB');
+      
+      if (resizedBase64.length > 3 * 1024 * 1024) { // 3MB limit for safety
+        alert(`画像のファイルサイズが大きすぎます（${sizeInMB}MB）。より小さい画像を選択するか、画質を下げてください。`);
         return;
       }
       
@@ -159,11 +232,17 @@ export default function ImageManager() {
       } else {
         console.log('[ImageManager] Setting preview URL and new image');
         setPreviewUrl(resizedBase64);
-        setNewImage(prev => ({ ...prev, file }));
+        setNewImage(prev => ({ 
+          ...prev, 
+          file,
+          name: prev.name || file.name.replace(/\.[^/.]+$/, "") // Use filename if no name set
+        }));
       }
+      
+      console.log('[ImageManager] Image processing completed successfully');
     } catch (error) {
-      console.error('Image processing error:', error);
-      alert('画像の処理中にエラーが発生しました: ' + (error as Error).message);
+      console.error('[ImageManager] Image processing error:', error);
+      alert('画像の処理中にエラーが発生しました: ' + (error as Error).message + '\n\nファイル形式が正しいか確認してください。');
     } finally {
       setIsUploading(false);
     }
@@ -198,20 +277,37 @@ export default function ImageManager() {
     console.log('[ImageManager] handleUpload called');
     console.log('[ImageManager] newImage:', newImage);
     console.log('[ImageManager] previewUrl exists:', !!previewUrl);
+    console.log('[ImageManager] previewUrl length:', previewUrl?.length);
     
-    if (!newImage.file || !previewUrl) {
+    // Enhanced validation
+    if (!newImage.file) {
       alert('画像ファイルを選択してください');
       return;
     }
     
-    if (!newImage.name) {
+    if (!previewUrl || previewUrl.length === 0) {
+      alert('画像が正しく処理されていません。再度ファイルを選択してください。');
+      return;
+    }
+    
+    if (!newImage.name || newImage.name.trim() === '') {
       alert('画像名を入力してください');
       return;
     }
 
+    // Validate base64 format
+    if (!previewUrl.startsWith('data:image/')) {
+      console.error('[ImageManager] Invalid preview URL format:', previewUrl.substring(0, 50));
+      alert('画像データの形式が正しくありません。再度ファイルを選択してください。');
+      return;
+    }
+
+    setIsUploading(true);
     try {
+      console.log('[ImageManager] Starting upload process...');
+      
       // 製品画像の場合、適切なIDを生成
-      let imageId = Date.now().toString();
+      let imageId = `upload-${Date.now()}`;
       if (newImage.category === 'products' && newImage.section) {
         const productIdMap: { [key: string]: string } = {
           '製品 - ブランフォームトップ': 'product-1-custom',
@@ -224,24 +320,22 @@ export default function ImageManager() {
         console.log('[ImageManager] Generated imageId for product:', imageId);
       }
 
-      // 画像データを最終確認
-      if (!previewUrl || previewUrl.length === 0) {
-        console.error('[ImageManager] Preview URL is empty!');
-        alert('画像データが正しく処理されませんでした。もう一度お試しください。');
-        return;
-      }
-
       const imageItem: ImageItem = {
         id: imageId,
         url: previewUrl,
-        name: newImage.name,
+        name: newImage.name.trim(),
         category: newImage.category,
         section: newImage.section || undefined,
         uploadDate: new Date().toISOString()
       };
-      console.log('[ImageManager] Created imageItem:', imageItem);
-      console.log('[ImageManager] Image URL length:', imageItem.url.length);
-      console.log('[ImageManager] Image URL starts with:', imageItem.url.substring(0, 50));
+      
+      console.log('[ImageManager] Created imageItem:', { 
+        id: imageItem.id, 
+        name: imageItem.name, 
+        category: imageItem.category, 
+        section: imageItem.section,
+        urlLength: imageItem.url.length 
+      });
 
       // 同じIDまたはsectionの画像が既に存在する場合は置き換える
       let updatedImages;
@@ -262,50 +356,65 @@ export default function ImageManager() {
         console.log('[ImageManager] Adding new image');
       }
       
-      console.log('[ImageManager] Updated images array:', updatedImages);
+      console.log('[ImageManager] Updated images count:', updatedImages.length);
+      
+      // State を先に更新
       setImages(updatedImages);
       
-      console.log('[ImageManager] Saving to localStorage');
+      // localStorage に保存
+      console.log('[ImageManager] Saving to localStorage...');
       try {
-        localStorage.setItem('siteImages', JSON.stringify(updatedImages));
+        const jsonString = JSON.stringify(updatedImages);
+        console.log('[ImageManager] JSON string length:', jsonString.length);
         
-        // Verify localStorage
+        localStorage.setItem('siteImages', jsonString);
+        
+        // Verify localStorage save
         const verifyStorage = localStorage.getItem('siteImages');
-        console.log('[ImageManager] Verify localStorage after save:', verifyStorage);
-        
         if (!verifyStorage) {
-          throw new Error('Failed to save to localStorage');
+          throw new Error('LocalStorage への保存に失敗しました');
         }
         
-        // 少し遅延を入れてイベントを発火
+        const parsedVerify = JSON.parse(verifyStorage);
+        console.log('[ImageManager] Verified saved images count:', parsedVerify.length);
+        
+        // イベント発火で他のコンポーネントに通知
+        console.log('[ImageManager] Dispatching update events...');
         setTimeout(() => {
-          console.log('[ImageManager] Dispatching imagesUpdated event');
           window.dispatchEvent(new Event('imagesUpdated'));
           window.dispatchEvent(new StorageEvent('storage', {
             key: 'siteImages',
-            newValue: JSON.stringify(updatedImages),
+            newValue: jsonString,
             url: window.location.href
           }));
         }, 100);
         
-        console.log('[ImageManager] Updated images saved to localStorage:', updatedImages);
-      } catch (error) {
-        console.error('[ImageManager] Error saving to localStorage:', error);
-        alert('画像の保存に失敗しました。ローカルストレージの容量を確認してください。');
-        return;
+        console.log('[ImageManager] Upload process completed successfully');
+        
+        // Reset form
+        setNewImage({ name: '', category: 'hero', section: '', file: null });
+        setPreviewUrl('');
+        setShowUploadModal(false);
+        if (fileInputRef.current) fileInputRef.current.value = '';
+        
+        alert('画像が正常にアップロードされました！サイトに反映されているか確認してください。');
+        
+      } catch (storageError) {
+        console.error('[ImageManager] localStorage error:', storageError);
+        
+        // localStorage 容量チェック
+        const storageData = localStorage.getItem('siteImages');
+        const currentSize = storageData ? (storageData.length / (1024 * 1024)).toFixed(2) : '0';
+        
+        alert(`画像の保存に失敗しました。\nエラー: ${(storageError as Error).message}\n現在の使用量: ${currentSize}MB\n\nローカルストレージの容量を確認してください。`);
+        throw storageError;
       }
-
-      // Reset form
-      setNewImage({ name: '', category: 'hero', section: '', file: null });
-      setPreviewUrl('');
-      setShowUploadModal(false);
-      if (fileInputRef.current) fileInputRef.current.value = '';
       
-      alert('画像が正常にアップロードされました');
-      console.log('[ImageManager] Image upload completed successfully');
     } catch (error) {
-      console.error('Upload error:', error);
-      alert('アップロード中にエラーが発生しました');
+      console.error('[ImageManager] Upload error:', error);
+      alert('アップロード中にエラーが発生しました: ' + (error as Error).message);
+    } finally {
+      setIsUploading(false);
     }
   };
 

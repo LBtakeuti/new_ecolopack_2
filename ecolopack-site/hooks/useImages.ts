@@ -51,21 +51,21 @@ export function useImages(category?: string) {
     const handleStorageChange = (e?: StorageEvent) => {
       console.log('[useImages] Storage change event received:', e?.key);
       if (!e || e.key === 'siteImages') {
-        loadImages();
+        setTimeout(loadImages, 50); // Small delay to ensure localStorage is updated
       }
     };
 
+    const handleImagesUpdated = () => {
+      console.log('[useImages] imagesUpdated event received, reloading...');
+      setTimeout(loadImages, 50); // Small delay to ensure localStorage is updated
+    };
+
     window.addEventListener('storage', handleStorageChange);
-    
-    // Custom event for same-window updates
-    window.addEventListener('imagesUpdated', () => {
-      console.log('[useImages] imagesUpdated event received');
-      loadImages();
-    });
+    window.addEventListener('imagesUpdated', handleImagesUpdated);
 
     return () => {
       window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('imagesUpdated', loadImages);
+      window.removeEventListener('imagesUpdated', handleImagesUpdated);
     };
   }, [category]);
 
