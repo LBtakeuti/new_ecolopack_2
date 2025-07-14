@@ -24,8 +24,8 @@ export default function Contact() {
               <h3 className="text-xl font-semibold mb-3" style={{ color: '#A2D297' }}>
                 お電話でのお問い合わせ
               </h3>
-              <p className="text-3xl font-bold mb-2" style={{ color: '#A2D297' }}>
-                03-1234-5678
+              <p className="text-2xl font-bold mb-2" style={{ color: '#A2D297' }}>
+                044-433-2065
               </p>
               <p style={{ color: '#666666' }}>
                 営業時間: 平日 9:00〜17:00
@@ -42,7 +42,7 @@ export default function Contact() {
                 FAX
               </h3>
               <p className="text-2xl font-bold mb-2" style={{ color: '#333333' }}>
-                03-1234-5679
+                044-433-8706
               </p>
               <p style={{ color: '#666666' }}>
                 24時間受付
@@ -52,17 +52,19 @@ export default function Contact() {
             <div className="bg-white rounded-lg p-8 text-center" style={{ boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
               <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: 'rgba(162, 210, 151, 0.1)' }}>
                 <svg className="w-8 h-8" style={{ color: '#A2D297' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
               <h3 className="text-xl font-semibold mb-3" style={{ color: '#A2D297' }}>
-                所在地
+                E-mail
               </h3>
-              <p className="leading-relaxed" style={{ color: '#666666' }}>
-                〒100-0001<br />
-                東京都千代田区千代田1-1-1
-              </p>
+              <a 
+                href="mailto:ecolopack@ho.noble-j.co.jp"
+                className="text-sm leading-relaxed hover:text-primary transition-colors duration-200"
+                style={{ color: '#666666' }}
+              >
+                ecolopack@ho.noble-j.co.jp
+              </a>
             </div>
           </div>
           
@@ -72,7 +74,7 @@ export default function Contact() {
             </h3>
             <div className="text-center">
               <a 
-                href="tel:03-1234-5678"
+                href="tel:044-433-2065"
                 className="inline-flex items-center text-white font-bold text-xl px-8 py-4 rounded-full transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
                 style={{ backgroundColor: '#A2D297' }}
                 onMouseEnter={(e) => { 
@@ -85,12 +87,23 @@ export default function Contact() {
                 <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
-                03-1234-5678
+                044-433-2065
               </a>
             </div>
             <p className="text-center mt-4" style={{ color: '#666666' }}>
               製品のご質問、お見積り、技術的なお問い合わせまで、専門スタッフが丁寧にお答えいたします。
             </p>
+            <div className="text-center mt-6">
+              <a 
+                href="mailto:ecolopack@ho.noble-j.co.jp"
+                className="inline-flex items-center text-primary font-semibold px-6 py-3 border-2 border-primary rounded-full transition-all duration-300 hover:bg-primary hover:text-white"
+              >
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                メールでお問い合わせ
+              </a>
+            </div>
           </div>
         </div>
       </div>
