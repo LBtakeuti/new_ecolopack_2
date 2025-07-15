@@ -213,7 +213,7 @@ export default function ProductDetail({ params }: { params: Promise<{ slug: stri
     
     const section = sectionMap[product.id];
     
-    // sectionが一致する画像を探す
+    // sectionが一致する画像を探す（デフォルト画像とカスタム画像両方）
     const updatedImages = productImages.filter(img => 
       img.section === section || 
       img.id === product.imageId ||

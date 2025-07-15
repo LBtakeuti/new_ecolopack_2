@@ -68,37 +68,29 @@ export default function Products() {
     
     console.log(`[Products] Looking for image for product: ${productName}, section: ${section}, productId: ${productId}`);
     
-    // カスタムIDも含めて画像を探す
-    const customIdMap: { [key: string]: string } = {
-      'ブランフォームトップ': 'product-1-custom',
-      'ブランフォーム': 'product-2-custom',
-      'ブランフォームBIG': 'product-3-custom',
-      'エコロパット': 'product-4-custom',
-      'ブランフォームグリーン': 'product-5-custom'
-    };
-    const customId = customIdMap[productName];
+    // sectionが一致する画像を探す（デフォルト画像とカスタム画像両方）
+    const sectionImages = productImages.filter(img => img.section === section);
+    console.log(`[Products] Found ${sectionImages.length} images for section: ${section}`);
     
-    // sectionが一致する画像、またはIDが一致する画像を探す
-    const image = productImages.find(img => {
-      const matchesSection = img.section === section;
-      const matchesDefaultId = img.id === productId;
-      const matchesCustomId = img.id === customId;
-      
-      console.log(`[Products] Checking image:`, img);
-      console.log(`  - Matches section: ${matchesSection}`);
-      console.log(`  - Matches default ID: ${matchesDefaultId}`);
-      console.log(`  - Matches custom ID: ${matchesCustomId}`);
-      
-      return matchesSection || matchesDefaultId || matchesCustomId;
-    });
+    // カスタム画像（isDefaultがfalseまたは未定義で、IDにimageを含む）を優先
+    const customImage = sectionImages.find(img => 
+      !img.isDefault && (img.id.includes('image-') || img.id.includes('custom'))
+    );
     
-    if (image) {
-      console.log(`[Products] Found custom image for ${productName}:`, image);
+    // カスタム画像があればそれを使用、なければデフォルト画像IDと一致するものを探す
+    const selectedImage = customImage || sectionImages.find(img => img.id === productId);
+    
+    if (selectedImage) {
+      console.log(`[Products] Found image for ${productName}:`, {
+        id: selectedImage.id,
+        isDefault: selectedImage.isDefault,
+        url: selectedImage.url.substring(0, 50) + '...'
+      });
+      return selectedImage.url;
     } else {
       console.log(`[Products] No custom image found for ${productName}, using default: ${defaultImage}`);
+      return defaultImage;
     }
-    
-    return image ? image.url : defaultImage;
   };
 
   return (

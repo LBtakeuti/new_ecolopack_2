@@ -17,26 +17,23 @@ export function useImages(category?: string) {
       }
       
       try {
-        const savedImages = localStorage.getItem('siteImages');
-        console.log('[useImages] Raw localStorage data:', savedImages ? `${savedImages.length} characters` : 'null');
+        // まず初期化を実行して最新のデフォルト画像を確保
+        const allImages = initializeImages();
+        console.log('[useImages] Loaded images count:', allImages.length);
+        console.log('[useImages] Sample images:', allImages.slice(0, 3).map(img => ({ id: img.id, name: img.name, isDefault: img.isDefault })));
         
-        if (savedImages && savedImages !== 'undefined') {
-          const allImages = JSON.parse(savedImages);
-          console.log('[useImages] Parsed images count:', allImages.length);
-          console.log('[useImages] First image:', allImages[0]);
-          
-          if (category) {
-            const filtered = allImages.filter((img: ImageItem) => img.category === category);
-            console.log('[useImages] Filtered images for category', category, ':', filtered.length);
-            setImages(filtered);
-          } else {
-            setImages(allImages);
-          }
+        if (category) {
+          const filtered = allImages.filter((img: ImageItem) => img.category === category);
+          console.log('[useImages] Filtered images for category', category, ':', filtered.length);
+          console.log('[useImages] Filtered image details:', filtered.map(img => ({ 
+            id: img.id, 
+            name: img.name, 
+            section: img.section, 
+            isDefault: img.isDefault 
+          })));
+          setImages(filtered);
         } else {
-          console.log('[useImages] No images found in localStorage, initializing...');
-          // 初期化が必要な場合
-          const defaultImages = initializeImages();
-          setImages(category ? defaultImages.filter(img => img.category === category) : defaultImages);
+          setImages(allImages);
         }
       } catch (error) {
         console.error('[useImages] Error loading images:', error);
@@ -44,26 +41,27 @@ export function useImages(category?: string) {
       }
     };
 
-    // 初回ロード
-    loadImages();
+    // 初回ロード（少し遅延させてDOM準備完了後に実行）
+    const timer = setTimeout(loadImages, 100);
 
     // Listen for storage changes
     const handleStorageChange = (e?: StorageEvent) => {
       console.log('[useImages] Storage change event received:', e?.key);
       if (!e || e.key === 'siteImages') {
-        setTimeout(loadImages, 50); // Small delay to ensure localStorage is updated
+        setTimeout(loadImages, 100); // 遅延を少し増やす
       }
     };
 
     const handleImagesUpdated = () => {
       console.log('[useImages] imagesUpdated event received, reloading...');
-      setTimeout(loadImages, 50); // Small delay to ensure localStorage is updated
+      setTimeout(loadImages, 100); // 遅延を少し増やす
     };
 
     window.addEventListener('storage', handleStorageChange);
     window.addEventListener('imagesUpdated', handleImagesUpdated);
 
     return () => {
+      clearTimeout(timer);
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('imagesUpdated', handleImagesUpdated);
     };
