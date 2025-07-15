@@ -33,9 +33,9 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                className={`px-4 py-2 text-sm font-medium ${
                   pathname === item.href
-                    ? 'bg-white text-primary shadow-md'
+                    ? 'text-primary bg-white'
                     : 'text-white'
                 }`}
               >
@@ -75,9 +75,9 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`block px-3 py-2 rounded-md text-base font-medium ${
+                className={`block px-3 py-2 text-base font-medium ${
                   pathname === item.href
-                    ? 'bg-white text-primary'
+                    ? 'text-primary bg-white'
                     : 'text-white'
                 }`}
                 onClick={() => setIsMenuOpen(false)}
