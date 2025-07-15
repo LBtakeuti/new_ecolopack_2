@@ -33,10 +33,10 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`px-4 py-2 text-sm font-medium ${
+                className={`px-4 py-2 text-sm font-medium transition-colors duration-300 ${
                   pathname === item.href
-                    ? 'text-primary bg-white'
-                    : 'text-white'
+                    ? 'text-primary bg-white border-b-2 border-primary'
+                    : 'text-white hover:text-primary'
                 }`}
               >
                 {item.name}
@@ -75,10 +75,10 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`block px-3 py-2 text-base font-medium ${
+                className={`block px-3 py-2 text-base font-medium transition-colors duration-300 ${
                   pathname === item.href
-                    ? 'text-primary bg-white'
-                    : 'text-white'
+                    ? 'text-primary bg-white border-l-4 border-primary'
+                    : 'text-white hover:text-primary'
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
