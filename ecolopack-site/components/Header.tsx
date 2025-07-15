@@ -28,21 +28,19 @@ export default function Header() {
 
   return (
     <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white shadow-md' : 'bg-white/95 backdrop-blur-sm'
-      }`}
+      className="fixed top-0 left-0 right-0 z-50 bg-primary shadow-md"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <div className="flex-shrink-0 flex items-center">
             <Link href="/" className="flex items-center space-x-3">
               {/* ロゴエリア */}
-              <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-xl">E</span>
+              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
+                <span className="text-primary font-bold text-xl">E</span>
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">株式会社エコロパック</h1>
-                <p className="text-xs text-gray-600">ECOLOPACK Co., Ltd.</p>
+                <h1 className="text-xl font-bold text-white">株式会社エコロパック</h1>
+                <p className="text-xs text-white/80">ECOLOPACK Co., Ltd.</p>
               </div>
             </Link>
           </div>
@@ -55,8 +53,8 @@ export default function Header() {
                 href={item.href}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
                   pathname === item.href
-                    ? 'bg-primary text-white'
-                    : 'text-gray-700 hover:bg-gray-100'
+                    ? 'bg-white text-primary'
+                    : 'text-white hover:bg-white/20'
                 }`}
               >
                 {item.name}
@@ -64,7 +62,7 @@ export default function Header() {
             ))}
             <a
               href="tel:0729400323"
-              className="ml-4 bg-primary text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-primary-dark transition-colors duration-300 flex items-center"
+              className="ml-4 bg-white text-primary px-6 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 transition-colors duration-300 flex items-center"
             >
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -75,13 +73,13 @@ export default function Header() {
           
           {/* モバイルメニューボタン */}
           <button
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100"
+            className="md:hidden p-2 rounded-lg hover:bg-white/20"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? (
-              <XMarkIcon className="h-6 w-6 text-gray-700" />
+              <XMarkIcon className="h-6 w-6 text-white" />
             ) : (
-              <Bars3Icon className="h-6 w-6 text-gray-700" />
+              <Bars3Icon className="h-6 w-6 text-white" />
             )}
           </button>
         </div>
@@ -89,7 +87,7 @@ export default function Header() {
       
       {/* モバイルメニュー */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200 shadow-lg">
+        <div className="md:hidden bg-primary-dark border-t border-white/20 shadow-lg">
           <div className="px-2 pt-2 pb-3 space-y-1">
             {navigation.map((item) => (
               <Link
@@ -97,8 +95,8 @@ export default function Header() {
                 href={item.href}
                 className={`block px-3 py-2 rounded-md text-base font-medium ${
                   pathname === item.href
-                    ? 'bg-primary text-white'
-                    : 'text-gray-700 hover:bg-gray-100'
+                    ? 'bg-white text-primary'
+                    : 'text-white hover:bg-white/20'
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -107,7 +105,7 @@ export default function Header() {
             ))}
             <a
               href="tel:0729400323"
-              className="block px-3 py-2 rounded-md text-base font-medium bg-primary text-white hover:bg-primary-dark"
+              className="block px-3 py-2 rounded-md text-base font-medium bg-white text-primary hover:bg-gray-100"
               onClick={() => setIsMenuOpen(false)}
             >
               <div className="flex items-center">
