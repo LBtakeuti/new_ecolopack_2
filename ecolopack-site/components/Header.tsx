@@ -36,7 +36,7 @@ export default function Header() {
                 className={`px-4 py-2 text-sm font-medium transition-colors duration-300 ${
                   pathname === item.href
                     ? 'text-primary bg-white border-b-2 border-primary'
-                    : 'text-white hover:text-primary'
+                    : 'text-black hover:text-primary'
                 }`}
               >
                 {item.name}
@@ -78,7 +78,7 @@ export default function Header() {
                 className={`block px-3 py-2 text-base font-medium transition-colors duration-300 ${
                   pathname === item.href
                     ? 'text-primary bg-white border-l-4 border-primary'
-                    : 'text-white hover:text-primary'
+                    : 'text-black hover:text-primary'
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
