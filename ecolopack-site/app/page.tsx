@@ -32,13 +32,13 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/products"
-                className="bg-white text-primary px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors duration-300 shadow-lg"
+                className="bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary-dark transition-colors duration-300 shadow-lg"
               >
                 製品を見る
               </Link>
               <Link
                 href="/company"
-                className="bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary-dark transition-colors duration-300 shadow-lg"
+                className="bg-white text-primary px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors duration-300 shadow-lg border-2 border-white"
               >
                 会社案内
               </Link>
