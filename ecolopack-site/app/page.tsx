@@ -301,7 +301,7 @@ export default function Home() {
               製品選びのご相談から、カスタマイズのご要望まで<br />
               お客様のニーズに合わせて最適なソリューションをご提案いたします
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex justify-center items-center">
               <a
                 href="tel:0729400323"
                 className="inline-flex items-center justify-center bg-white text-black border-2 border-primary px-8 py-4 rounded-lg font-bold hover:scale-105 transition-all duration-300 text-lg shadow-lg hover:shadow-2xl transform hover:-translate-y-2 w-full sm:w-auto"
@@ -311,15 +311,6 @@ export default function Home() {
                 </svg>
                 072-940-0323
               </a>
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center bg-white text-black border-2 border-primary px-8 py-4 rounded-lg font-bold hover:scale-105 transition-all duration-300 text-lg shadow-lg hover:shadow-2xl transform hover:-translate-y-2 w-full sm:w-auto"
-              >
-                お問い合わせフォーム
-                <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
             </div>
           </div>
         </section>

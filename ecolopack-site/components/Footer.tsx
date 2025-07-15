@@ -50,9 +50,6 @@ export default function Footer() {
               <Link href="/products" className="block text-white/70 hover:text-white transition-colors">
                 製品情報
               </Link>
-              <Link href="/contact" className="block text-white/70 hover:text-white transition-colors">
-                お問い合わせ
-              </Link>
               <Link href="/admin" className="block text-white/70 hover:text-white transition-colors">
                 管理画面
               </Link>

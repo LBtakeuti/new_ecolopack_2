@@ -13,7 +13,6 @@ export default function Header() {
     { name: 'ホーム', href: '/' },
     { name: '会社情報', href: '/company' },
     { name: '製品情報', href: '/products' },
-    { name: 'お問い合わせ', href: '/contact' },
   ];
 
   return (
@@ -21,12 +20,7 @@ export default function Header() {
       className="bg-primary shadow-md"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-          <div className="flex-shrink-0 flex items-center">
-            <Link href="/" className="flex items-center">
-            </Link>
-          </div>
-          
+        <div className="flex justify-end items-center h-20">
           {/* デスクトップナビゲーション */}
           <nav className="hidden md:flex items-center space-x-1">
             {navigation.map((item) => (
