@@ -13,16 +13,16 @@ export default function Footer() {
           </div>
           <div className="md:text-right">
             <nav className="space-x-6">
-              <Link href="#home" className="text-white/80 hover:text-white transition-colors">
+              <Link href="/" className="text-white/80 hover:text-white transition-colors">
                 ホーム
               </Link>
-              <Link href="#products" className="text-white/80 hover:text-white transition-colors">
+              <Link href="/products" className="text-white/80 hover:text-white transition-colors">
                 製品情報
               </Link>
-              <Link href="#company" className="text-white/80 hover:text-white transition-colors">
-                会社概要
+              <Link href="/company" className="text-white/80 hover:text-white transition-colors">
+                会社情報
               </Link>
-              <Link href="#contact" className="text-white/80 hover:text-white transition-colors">
+              <Link href="/contact" className="text-white/80 hover:text-white transition-colors">
                 お問い合わせ
               </Link>
             </nav>

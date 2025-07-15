@@ -18,16 +18,16 @@ export default function Header() {
           </div>
           
           <nav className="hidden md:flex space-x-8">
-            <Link href="#home" className="text-white hover:text-white/80 transition-colors duration-300 font-medium">
+            <Link href="/" className="text-white hover:text-white/80 transition-colors duration-300 font-medium">
               ホーム
             </Link>
-            <Link href="#products" className="text-white hover:text-white/80 transition-colors duration-300 font-medium">
+            <Link href="/products" className="text-white hover:text-white/80 transition-colors duration-300 font-medium">
               製品情報
             </Link>
-            <Link href="#company" className="text-white hover:text-white/80 transition-colors duration-300 font-medium">
-              会社概要
+            <Link href="/company" className="text-white hover:text-white/80 transition-colors duration-300 font-medium">
+              会社情報
             </Link>
-            <Link href="#contact" className="text-white hover:text-white/80 transition-colors duration-300 font-medium">
+            <Link href="/contact" className="text-white hover:text-white/80 transition-colors duration-300 font-medium">
               お問い合わせ
             </Link>
           </nav>
@@ -50,28 +50,28 @@ export default function Header() {
         <div className="md:hidden border-t" style={{ backgroundColor: '#A2D297', borderTopColor: 'rgba(255,255,255,0.2)' }}>
           <div className="px-2 pt-2 pb-3 space-y-1">
             <Link
-              href="#home"
+              href="/"
               className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-white/20"
               onClick={() => setIsMenuOpen(false)}
             >
               ホーム
             </Link>
             <Link
-              href="#products"
+              href="/products"
               className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-white/20"
               onClick={() => setIsMenuOpen(false)}
             >
               製品情報
             </Link>
             <Link
-              href="#company"
+              href="/company"
               className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-white/20"
               onClick={() => setIsMenuOpen(false)}
             >
-              会社概要
+              会社情報
             </Link>
             <Link
-              href="#contact"
+              href="/contact"
               className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-white/20"
               onClick={() => setIsMenuOpen(false)}
             >
