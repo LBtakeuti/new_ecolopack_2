@@ -15,7 +15,10 @@
       "Bash(mv:*)",
       "Bash(git remote set-url:*)",
       "Bash(git add:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(git commit:*)",
+      "Bash(vercel:*)",
+      "Bash(git push:*)"
     ],
     "deny": []
   }

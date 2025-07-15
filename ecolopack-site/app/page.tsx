@@ -25,7 +25,7 @@ export default function Home() {
               地球にやさしい緩衝材で<br />
               未来を守る
             </h1>
-            <p className="text-xl md:text-2xl mb-8 drop-shadow-md">
+            <p className="text-xl md:text-2xl mb-6 drop-shadow-md">
               エコロパックは環境に配慮した梱包材のパイオニアとして<br />
               持続可能な社会の実現に貢献します
             </p>
@@ -47,9 +47,9 @@ export default function Home() {
         </section>
 
         {/* ニュース・お知らせ */}
-        <section className="py-16 bg-gray-50">
+        <section className="py-12 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center mb-8">
+            <div className="flex justify-between items-center mb-6">
               <h2 className="text-3xl font-bold text-gray-900">ニュース・お知らせ</h2>
               <Link href="#" className="text-primary hover:text-primary-dark font-medium">
                 すべて見る →
@@ -96,9 +96,9 @@ export default function Home() {
         </section>
 
         {/* 事業内容 */}
-        <section className="py-20 bg-white">
+        <section className="py-12 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                 事業内容
               </h2>
@@ -108,7 +108,7 @@ export default function Home() {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="text-center">
                 <div className="bg-primary-light rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
                   <svg className="w-12 h-12 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -152,12 +152,12 @@ export default function Home() {
         </section>
 
         {/* 数字で見るエコロパック */}
-        <section className="py-20 bg-primary">
+        <section className="py-12 bg-primary">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12">
               数字で見るエコロパック
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               <div className="text-center">
                 <div className="text-5xl font-bold text-white mb-2">40年</div>
                 <div className="text-white/80">創業からの歴史</div>
@@ -179,9 +179,9 @@ export default function Home() {
         </section>
 
         {/* 主要製品 */}
-        <section className="py-20 bg-gray-50">
+        <section className="py-12 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                 主要製品ラインナップ
               </h2>
@@ -190,7 +190,7 @@ export default function Home() {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
               <Link href="/products/blan-form-top" className="group">
                 <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                   <div className="h-48 bg-gray-200 relative overflow-hidden">
@@ -277,7 +277,7 @@ export default function Home() {
               </Link>
             </div>
             
-            <div className="text-center mt-12">
+            <div className="text-center mt-8">
               <Link
                 href="/products"
                 className="inline-flex items-center bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary-dark transition-colors duration-300"
@@ -292,12 +292,12 @@ export default function Home() {
         </section>
 
         {/* お問い合わせCTA */}
-        <section className="py-16 bg-white">
+        <section className="py-12 bg-white">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
               ご相談・お見積りは無料です
             </h2>
-            <p className="text-lg text-gray-600 mb-8">
+            <p className="text-lg text-gray-600 mb-6">
               製品選びのご相談から、カスタマイズのご要望まで<br />
               お客様のニーズに合わせて最適なソリューションをご提案いたします
             </p>

@@ -3,8 +3,8 @@ import Link from 'next/link';
 export default function Footer() {
   return (
     <footer className="bg-primary text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {/* 会社情報 */}
           <div className="md:col-span-2">
             <div className="flex items-center space-x-3 mb-4">
@@ -83,8 +83,8 @@ export default function Footer() {
         </div>
 
         {/* 認証・資格 */}
-        <div className="mt-8 pt-8 border-t border-white/20">
-          <div className="flex flex-wrap items-center justify-center gap-8 mb-8">
+        <div className="mt-6 pt-6 border-t border-white/20">
+          <div className="flex flex-wrap items-center justify-center gap-6 mb-6">
             <div className="text-center">
               <div className="bg-white/10 rounded-lg p-4 mb-2">
                 <span className="text-2xl font-bold">ISO 9001</span>
@@ -107,7 +107,7 @@ export default function Footer() {
         </div>
 
         {/* コピーライト */}
-        <div className="mt-8 pt-8 border-t border-white/20 text-center">
+        <div className="mt-6 pt-6 border-t border-white/20 text-center">
           <p className="text-white/70 text-sm">
             &copy; 2025 株式会社エコロパック. All rights reserved.
           </p>
