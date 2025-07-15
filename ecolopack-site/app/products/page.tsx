@@ -10,27 +10,9 @@ export default function ProductsPage() {
       <Header />
       <ScrollProgress />
       <div className="min-h-screen bg-white">
-        {/* ページヘッダー */}
-        <section className="bg-gradient-to-b from-gray-50 to-white py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center">
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-                製品情報
-              </h1>
-              <nav className="flex items-center justify-center space-x-2 text-sm text-gray-600 mb-8">
-                <Link href="/" className="hover:text-primary">ホーム</Link>
-                <span>/</span>
-                <span className="text-gray-900">製品情報</span>
-              </nav>
-              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                お客様のニーズに合わせた、環境に優しく高性能な緩衝材をご提供します
-              </p>
-            </div>
-          </div>
-        </section>
 
         {/* 製品の特長 */}
-        <section className="py-16">
+        <section className="py-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">
               エコロパック製品の特長
@@ -77,7 +59,7 @@ export default function ProductsPage() {
         <Products />
 
         {/* CTA */}
-        <section className="py-16 bg-primary">
+        <section className="py-12 bg-primary">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl font-bold text-white mb-6">
               最適な緩衝材をご提案します
