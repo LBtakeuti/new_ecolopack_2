@@ -33,15 +33,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <div className="flex-shrink-0 flex items-center">
-            <Link href="/" className="flex items-center space-x-3">
-              {/* ロゴエリア */}
-              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
-                <span className="text-primary font-bold text-xl">E</span>
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-white">株式会社エコロパック</h1>
-                <p className="text-xs text-white/80">ECOLOPACK Co., Ltd.</p>
-              </div>
+            <Link href="/" className="flex items-center">
             </Link>
           </div>
           
