@@ -190,7 +190,7 @@ export default function Home() {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
               <Link href="/products/blan-form-top" className="group">
                 <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                   <div className="h-48 bg-gray-200 relative overflow-hidden">
@@ -238,6 +238,23 @@ export default function Home() {
                   <div className="p-4">
                     <h3 className="font-semibold text-gray-900 mb-2">ブランフォームBIG</h3>
                     <p className="text-sm text-gray-600">大型製品向け</p>
+                  </div>
+                </div>
+              </Link>
+              
+              <Link href="/products/ecolopat" className="group">
+                <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                  <div className="h-48 bg-gray-200 relative overflow-hidden">
+                    <Image
+                      src="/images/エコロパット.jpg"
+                      alt="エコロパット"
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-semibold text-gray-900 mb-2">エコロパット</h3>
+                    <p className="text-sm text-gray-600">パット型緩衝材</p>
                   </div>
                 </div>
               </Link>
