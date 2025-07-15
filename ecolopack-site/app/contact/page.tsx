@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ScrollProgress from '@/components/ScrollProgress';
+import Link from 'next/link';
 
 export default function ContactPage() {
   return (
@@ -8,15 +9,22 @@ export default function ContactPage() {
       <Header />
       <ScrollProgress />
       <div className="min-h-screen bg-white">
-        {/* ヒーローセクション */}
-        <section className="bg-gradient-to-b from-primary-light to-white pt-24 pb-12">
+        {/* ページヘッダー */}
+        <section className="bg-gradient-to-b from-gray-50 to-white pt-32 pb-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-6">
-              お問い合わせ
-            </h1>
-            <p className="text-lg text-gray-600 text-center max-w-3xl mx-auto">
-              製品に関するご質問、お見積りのご依頼など、お気軽にお問い合わせください
-            </p>
+            <div className="text-center">
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                お問い合わせ
+              </h1>
+              <nav className="flex items-center justify-center space-x-2 text-sm text-gray-600 mb-8">
+                <Link href="/" className="hover:text-primary">ホーム</Link>
+                <span>/</span>
+                <span className="text-gray-900">お問い合わせ</span>
+              </nav>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                製品に関するご質問、お見積りのご依頼など、お気軽にお問い合わせください
+              </p>
+            </div>
           </div>
         </section>
 

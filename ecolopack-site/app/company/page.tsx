@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ScrollProgress from '@/components/ScrollProgress';
+import Link from 'next/link';
 
 export default function CompanyPage() {
   return (
@@ -8,16 +9,23 @@ export default function CompanyPage() {
       <Header />
       <ScrollProgress />
       <div className="min-h-screen bg-white">
-        {/* ヒーローセクション */}
-        <section className="bg-gradient-to-b from-primary-light to-white pt-24 pb-12">
+        {/* ページヘッダー */}
+        <section className="bg-gradient-to-b from-gray-50 to-white pt-32 pb-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-6">
-              会社情報
-            </h1>
-            <p className="text-lg text-gray-600 text-center max-w-3xl mx-auto">
-              エコロパックは、地球環境に配慮した緩衝材の製造を通じて、
-              持続可能な社会の実現に貢献しています
-            </p>
+            <div className="text-center">
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                会社情報
+              </h1>
+              <nav className="flex items-center justify-center space-x-2 text-sm text-gray-600 mb-8">
+                <Link href="/" className="hover:text-primary">ホーム</Link>
+                <span>/</span>
+                <span className="text-gray-900">会社情報</span>
+              </nav>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                エコロパックは、地球環境に配慮した緩衝材の製造を通じて、
+                持続可能な社会の実現に貢献しています
+              </p>
+            </div>
           </div>
         </section>
 
