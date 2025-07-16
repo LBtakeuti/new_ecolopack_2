@@ -1,5 +1,4 @@
 import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 
 export default function CompanyPage() {
   return (
@@ -11,7 +10,6 @@ export default function CompanyPage() {
           <p className="text-lg text-gray-600">準備中です</p>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

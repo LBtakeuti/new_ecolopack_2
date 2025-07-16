@@ -5,7 +5,6 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import ScrollProgress from '@/components/ScrollProgress';
 import { useImages } from '@/hooks/useImages';
 
@@ -396,7 +395,6 @@ export default function ProductDetail({ params }: { params: Promise<{ slug: stri
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

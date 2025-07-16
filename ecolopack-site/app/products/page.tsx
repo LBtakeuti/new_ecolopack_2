@@ -1,5 +1,4 @@
 import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import ScrollProgress from '@/components/ScrollProgress';
 import Products from '@/components/Products';
 import Link from 'next/link';
@@ -80,7 +79,6 @@ export default function ProductsPage() {
           </div>
         </section>
       </div>
-      <Footer />
       <style jsx global>{`
         body {
           background: white !important;

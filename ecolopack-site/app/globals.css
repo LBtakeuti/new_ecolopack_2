@@ -46,4 +46,35 @@
     border: none !important;
     overflow: hidden !important;
   }
+  
+  /* Remove footer sections completely */
+  footer,
+  div[class*="bg-primary"],
+  div[class*="text-white"],
+  div[class*="border-white"],
+  section[class*="bg-primary"],
+  div[class*="bg-white/"],
+  div[class*="text-white/"],
+  div[class*="border-white/"],
+  .max-w-7xl.mx-auto.px-4.py-8,
+  div:has(> div > div > h2:contains("株式会社エコロパック")),
+  div:has(> h3:contains("サイトマップ")),
+  div:has(> h3:contains("製品カテゴリー")),
+  div:has(> p:contains("© 2025 株式会社エコロパック")),
+  div:has(> p:contains("環境に優しい緩衝材のパイオニア")),
+  div:has(span:contains("ISO 9001")),
+  div:has(span:contains("ISO 14001")),
+  div:has(span:contains("エコマーク")) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    overflow: hidden !important;
+    position: absolute !important;
+    left: -9999px !important;
+  }
 }
