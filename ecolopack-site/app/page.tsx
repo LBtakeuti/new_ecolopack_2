@@ -151,32 +151,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 数字で見るエコロパック */}
-        <section className="py-12 bg-primary">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12">
-              数字で見るエコロパック
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              <div className="text-center">
-                <div className="text-5xl font-bold text-white mb-2">40年</div>
-                <div className="text-white/80">創業からの歴史</div>
-              </div>
-              <div className="text-center">
-                <div className="text-5xl font-bold text-white mb-2">5,000社</div>
-                <div className="text-white/80">以上の取引実績</div>
-              </div>
-              <div className="text-center">
-                <div className="text-5xl font-bold text-white mb-2">99.8%</div>
-                <div className="text-white/80">顧客満足度</div>
-              </div>
-              <div className="text-center">
-                <div className="text-5xl font-bold text-white mb-2">ISO14001</div>
-                <div className="text-white/80">環境認証取得</div>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* 主要製品 */}
         <section className="py-12 bg-gray-50">
@@ -291,29 +265,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* お問い合わせCTA */}
-        <section className="py-12 bg-white">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              ご相談・お見積りは無料です
-            </h2>
-            <p className="text-lg text-gray-600 mb-6">
-              製品選びのご相談から、カスタマイズのご要望まで<br />
-              お客様のニーズに合わせて最適なソリューションをご提案いたします
-            </p>
-            <div className="flex justify-center items-center">
-              <a
-                href="tel:0729400323"
-                className="inline-flex items-center justify-center bg-white text-black border-2 border-primary px-8 py-4 rounded-lg font-bold hover:scale-105 transition-all duration-300 text-lg shadow-lg hover:shadow-2xl transform hover:-translate-y-2 w-full sm:w-auto"
-              >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-                072-940-0323
-              </a>
-            </div>
-          </div>
-        </section>
       </main>
       <Footer />
     </>
