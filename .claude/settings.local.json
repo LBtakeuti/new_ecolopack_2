@@ -18,7 +18,8 @@
       "Bash(npm run build:*)",
       "Bash(git commit:*)",
       "Bash(vercel:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(echo $PWD)"
     ],
     "deny": []
   }

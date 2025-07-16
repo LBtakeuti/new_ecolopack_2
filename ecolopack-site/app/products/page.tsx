@@ -81,6 +81,15 @@ export default function ProductsPage() {
         </section>
       </div>
       <Footer />
+      <style jsx global>{`
+        body {
+          background: white !important;
+          background-image: none !important;
+        }
+        body > * {
+          background: transparent !important;
+        }
+      `}</style>
     </>
   );
 }
