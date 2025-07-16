@@ -26,10 +26,24 @@
     background: transparent !important;
   }
   
-  /* Remove any map-related backgrounds */
+  /* Remove any map-related backgrounds and blue background elements */
   div[class*="map"], 
   div[id*="map"],
-  div[style*="map"] {
+  div[style*="map"],
+  div[style*="background-color: blue"],
+  div[style*="background: blue"],
+  div[style*="bg-blue"],
+  div[class*="bg-blue"],
+  div[style*="background-color: #"],
+  div[style*="background: #"] {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    overflow: hidden !important;
   }
 }
