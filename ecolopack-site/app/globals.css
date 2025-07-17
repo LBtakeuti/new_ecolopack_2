@@ -111,9 +111,11 @@
     display: none !important;
   }
   
-  /* Hide empty sections and extra spacing */
-  section:empty,
-  div:empty,
+  /* Hide only truly empty sections */
+  section:empty {
+    display: none !important;
+  }
+  
   .min-h-screen {
     min-height: auto !important;
   }
@@ -136,15 +138,10 @@
     min-height: auto !important;
   }
   
-  /* Specifically target footer structure with more specific selectors */
-  body > div:has(h2:contains("株式会社エコロパック")):has(.grid-cols-4),
-  body > div > .max-w-7xl:has(.border-white\/20) {
+  /* Remove footer-specific patterns only */
+  #footer-container,
+  .footer-wrapper {
     display: none !important;
-    height: 0 !important;
-    overflow: hidden !important;
-    visibility: hidden !important;
-    position: absolute !important;
-    left: -9999px !important;
   }
   
   /* Remove any non-white background sections after main content */
