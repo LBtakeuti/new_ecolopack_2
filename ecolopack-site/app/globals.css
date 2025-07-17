@@ -6,6 +6,7 @@
   html {
     scroll-behavior: smooth;
     background: white !important;
+    height: 100%;
   }
   
   body {
@@ -13,6 +14,15 @@
     background: white !important;
     background-color: white !important;
     background-image: none !important;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Remove any extra space at the bottom */
+  main {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
   }
   
   /* Force all elements to have transparent or white background */
@@ -35,7 +45,21 @@
   div[style*="bg-blue"],
   div[class*="bg-blue"],
   div[style*="background-color: #"],
-  div[style*="background: #"] {
+  div[style*="background: #"],
+  div[style*="background-color: rgb"],
+  div[style*="background: rgb"],
+  div[style*="rgba"],
+  div[style*="background-color"][style*="blue"],
+  div[style*="background"][style*="blue"],
+  *[style*="background-color: skyblue"],
+  *[style*="background: skyblue"],
+  *[style*="lightblue"],
+  *[style*="#87CEEB"],
+  *[style*="#ADD8E6"],
+  *[style*="#B0E0E6"],
+  *[style*="rgb(135, 206, 235)"],
+  *[style*="rgb(173, 216, 230)"],
+  *[style*="rgb(176, 224, 230)"] {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
@@ -45,35 +69,54 @@
     padding: 0 !important;
     border: none !important;
     overflow: hidden !important;
+    position: absolute !important;
+    left: -9999px !important;
   }
   
-  /* Remove footer sections completely */
+  /* Remove footer sections completely - using more specific selectors */
   footer,
-  div[class*="bg-primary"],
-  div[class*="text-white"],
-  div[class*="border-white"],
-  section[class*="bg-primary"],
-  div[class*="bg-white/"],
-  div[class*="text-white/"],
-  div[class*="border-white/"],
-  .max-w-7xl.mx-auto.px-4.py-8,
-  div:has(> div > div > h2:contains("株式会社エコロパック")),
-  div:has(> h3:contains("サイトマップ")),
-  div:has(> h3:contains("製品カテゴリー")),
-  div:has(> p:contains("© 2025 株式会社エコロパック")),
-  div:has(> p:contains("環境に優しい緩衝材のパイオニア")),
-  div:has(span:contains("ISO 9001")),
-  div:has(span:contains("ISO 14001")),
-  div:has(span:contains("エコマーク")) {
+  .bg-primary,
+  [class*="bg-primary"],
+  [class*="text-white"],
+  [class*="border-white"],
+  [class*="bg-white/"],
+  [class*="text-white/"],
+  [class*="border-white/"] {
     display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
+  }
+  
+  /* Target specific footer container patterns */
+  .max-w-7xl.mx-auto.py-8,
+  div.max-w-7xl.mx-auto.px-4.py-8,
+  div.grid.grid-cols-1.md\:grid-cols-4.gap-6,
+  div.mt-6.pt-6.border-t {
+    display: none !important;
+  }
+  
+  /* Hide empty sections and extra spacing */
+  section:empty,
+  div:empty,
+  .min-h-screen {
+    min-height: auto !important;
+  }
+  
+  /* Remove all footer-related spacing */
+  body > div:last-child,
+  main + * {
+    display: none !important;
+  }
+  
+  /* Specifically target footer structure */
+  .max-w-7xl.mx-auto.px-4.sm\:px-6.lg\:px-8.py-8,
+  div.max-w-7xl.mx-auto.px-4.py-8:has(.grid-cols-4),
+  div:has(> .grid.grid-cols-1.md\:grid-cols-4),
+  div:has(h2:contains("株式会社エコロパック")),
+  .grid.grid-cols-1.md\:grid-cols-4.gap-6,
+  .mt-6.pt-6.border-t.border-white\/20 {
+    display: none !important;
     height: 0 !important;
-    width: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: none !important;
     overflow: hidden !important;
+    visibility: hidden !important;
     position: absolute !important;
     left: -9999px !important;
   }
