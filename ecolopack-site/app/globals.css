@@ -99,23 +99,15 @@
     left: -9999px !important;
   }
   
-  /* Remove footer sections completely - using more specific selectors */
-  footer,
-  .bg-primary,
-  [class*="bg-primary"],
-  [class*="text-white"],
-  [class*="border-white"],
-  [class*="bg-white/"],
-  [class*="text-white/"],
-  [class*="border-white/"] {
+  /* Remove footer sections only */
+  footer {
     display: none !important;
   }
   
-  /* Target specific footer container patterns */
-  .max-w-7xl.mx-auto.py-8,
-  div.max-w-7xl.mx-auto.px-4.py-8,
-  div.grid.grid-cols-1.md\:grid-cols-4.gap-6,
-  div.mt-6.pt-6.border-t {
+  /* Target only footer-specific patterns */
+  footer .max-w-7xl.mx-auto.py-8,
+  footer div.grid.grid-cols-1.md\:grid-cols-4.gap-6,
+  footer div.mt-6.pt-6.border-t {
     display: none !important;
   }
   
@@ -144,13 +136,9 @@
     min-height: auto !important;
   }
   
-  /* Specifically target footer structure */
-  .max-w-7xl.mx-auto.px-4.sm\:px-6.lg\:px-8.py-8,
-  div.max-w-7xl.mx-auto.px-4.py-8:has(.grid-cols-4),
-  div:has(> .grid.grid-cols-1.md\:grid-cols-4),
-  div:has(h2:contains("株式会社エコロパック")),
-  .grid.grid-cols-1.md\:grid-cols-4.gap-6,
-  .mt-6.pt-6.border-t.border-white\/20 {
+  /* Specifically target footer structure with more specific selectors */
+  body > div:has(h2:contains("株式会社エコロパック")):has(.grid-cols-4),
+  body > div > .max-w-7xl:has(.border-white\/20) {
     display: none !important;
     height: 0 !important;
     overflow: hidden !important;
