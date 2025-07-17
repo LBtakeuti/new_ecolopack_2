@@ -122,6 +122,52 @@ export default function RootLayout({
                 }
                 // Run again after a short delay to catch any dynamic content
                 setTimeout(removeFooter, 100);
+                
+                // Additional cleanup for any remaining colored sections
+                setInterval(() => {
+                  // Find and remove any element with non-white background
+                  document.querySelectorAll('*').forEach(el => {
+                    const computed = window.getComputedStyle(el);
+                    const bgColor = computed.backgroundColor;
+                    const bg = computed.background;
+                    
+                    // Check if background is not white or transparent
+                    if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && 
+                        bgColor !== 'transparent' && bgColor !== 'white' && 
+                        bgColor !== 'rgb(255, 255, 255)' && bgColor !== 'rgba(255, 255, 255, 1)') {
+                      el.style.display = 'none';
+                      el.remove();
+                    }
+                  });
+                  
+                  // Remove any remaining footer-like structures
+                  document.querySelectorAll('.max-w-7xl.mx-auto').forEach(el => {
+                    if (el.querySelector('.grid-cols-4') || el.textContent.includes('株式会社エコロパック')) {
+                      el.remove();
+                    }
+                  });
+                  
+                  // Specifically remove the div.max-w-7xl.mx-auto.px-4.sm:px-6.lg:px-8.py-8 element
+                  document.querySelectorAll('div.max-w-7xl.mx-auto.px-4.py-8, div.max-w-7xl.mx-auto.px-4.sm\\:px-6.lg\\:px-8.py-8').forEach(el => {
+                    el.remove();
+                  });
+                  
+                  // Remove any empty space after main content
+                  const main = document.querySelector('main');
+                  if (main) {
+                    // Remove all siblings after main
+                    let nextSibling = main.nextElementSibling;
+                    while (nextSibling) {
+                      const toRemove = nextSibling;
+                      nextSibling = nextSibling.nextElementSibling;
+                      toRemove.remove();
+                    }
+                    
+                    // Ensure body doesn't have extra height
+                    document.body.style.minHeight = 'auto';
+                    document.body.style.height = 'auto';
+                  }
+                }, 500);
               }
             `,
           }}
