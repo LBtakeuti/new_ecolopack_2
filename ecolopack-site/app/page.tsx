@@ -35,12 +35,6 @@ export default function Home() {
               >
                 製品を見る
               </Link>
-              <Link
-                href="/company"
-                className="bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary-dark transition-colors duration-300 shadow-lg"
-              >
-                会社案内
-              </Link>
             </div>
           </div>
         </section>

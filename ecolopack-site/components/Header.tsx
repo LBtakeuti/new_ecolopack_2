@@ -11,7 +11,6 @@ export default function Header() {
 
   const navigation = [
     { name: 'ホーム', href: '/' },
-    { name: '会社情報', href: '/company' },
     { name: '製品情報', href: '/products' },
   ];
 
