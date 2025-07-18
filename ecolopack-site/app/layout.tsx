@@ -18,156 +18,59 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              // Remove footer elements on page load
+              // === フッター要素の削除処理 ===
               if (typeof window !== 'undefined') {
-                function removeFooter() {
-                  // Remove elements containing specific text
-                  const textsToRemove = [
-                    '株式会社エコロパック',
-                    'ECOLOPACK Co., Ltd.',
-                    '環境に優しい緩衝材のパイオニア',
-                    '© 2025 株式会社エコロパック',
-                    'サイトマップ',
-                    '製品カテゴリー',
-                    'ISO 9001',
-                    'ISO 14001',
-                    'エコマーク',
-                    'TEL: 072-940-0323',
-                    '〒542-0062 大阪府大阪市中央区'
-                  ];
-                  
-                  textsToRemove.forEach(text => {
-                    const elements = document.evaluate(
-                      "//*[contains(text(), '" + text + "')]",
-                      document,
-                      null,
-                      XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE,
-                      null
-                    );
-                    
-                    for (let i = 0; i < elements.snapshotLength; i++) {
-                      let elem = elements.snapshotItem(i);
-                      // Remove parent containers up to 4 levels
-                      let parent = elem;
-                      for (let j = 0; j < 4 && parent; j++) {
-                        parent = parent.parentElement;
-                      }
-                      if (parent && parent.classList.contains('max-w-7xl')) {
-                        parent.remove();
-                      }
-                    }
-                  });
-                  
-                  // Remove footer tags
+                function removeFooterElements() {
+                  // フッタータグを削除
                   document.querySelectorAll('footer').forEach(el => el.remove());
                   
-                  // Remove bg-primary sections
-                  document.querySelectorAll('[class*="bg-primary"]').forEach(el => el.remove());
-                  
-                  // Remove blue background elements
-                  const blueColors = [
-                    'skyblue', 'lightblue', '#87CEEB', '#ADD8E6', '#B0E0E6',
-                    'rgb(135, 206, 235)', 'rgb(173, 216, 230)', 'rgb(176, 224, 230)',
-                    'blue', '#0000FF', 'rgb(0, 0, 255)'
-                  ];
-                  
-                  document.querySelectorAll('*').forEach(el => {
-                    const style = window.getComputedStyle(el);
-                    const bgColor = style.backgroundColor;
-                    const bg = style.background;
-                    
-                    if (blueColors.some(color => 
-                      bgColor.includes(color) || bg.includes(color) ||
-                      el.style.backgroundColor.includes(color) || el.style.background.includes(color)
-                    )) {
+                  // 地図関連要素を削除
+                  document.querySelectorAll('[class*="map"], [id*="map"]').forEach(el => {
+                    // フッター内の地図要素のみ削除
+                    if (el.closest('footer') || el.classList.contains('map-section')) {
                       el.remove();
                     }
                   });
                   
-                  // Remove elements with inline blue backgrounds
-                  document.querySelectorAll('[style*="background"][style*="blue"]').forEach(el => el.remove());
-                  document.querySelectorAll('[style*="background-color"][style*="blue"]').forEach(el => el.remove());
-                  document.querySelectorAll('[style*="skyblue"]').forEach(el => el.remove());
-                  document.querySelectorAll('[style*="lightblue"]').forEach(el => el.remove());
+                  // 青い背景の要素を削除（フッター内のみ）
+                  const blueBackgroundElements = document.querySelectorAll(
+                    '[style*="background"][style*="blue"], ' +
+                    '[style*="background-color"][style*="blue"], ' +
+                    '[style*="skyblue"], [style*="lightblue"]'
+                  );
                   
-                  // Remove footer structure by class combinations
-                  document.querySelectorAll('.max-w-7xl.mx-auto.px-4.py-8').forEach(el => {
-                    if (el.querySelector('.grid.grid-cols-1.md\\:grid-cols-4') || 
-                        el.querySelector('[class*="text-white"]') ||
-                        el.textContent.includes('株式会社エコロパック')) {
+                  blueBackgroundElements.forEach(el => {
+                    // フッター要素または地図セクションの場合のみ削除
+                    if (el.tagName === 'FOOTER' || 
+                        el.closest('footer') || 
+                        el.classList.contains('map-section') ||
+                        el.classList.contains('blue-background-section')) {
                       el.remove();
                     }
                   });
                   
-                  // Remove any remaining footer containers
-                  document.querySelectorAll('.grid.grid-cols-1.md\\:grid-cols-4.gap-6').forEach(el => el.remove());
-                  document.querySelectorAll('.mt-6.pt-6.border-t.border-white\\/20').forEach(el => el.remove());
-                  
-                  // Remove containers with specific footer text
-                  const footerTexts = ['株式会社エコロパック', 'ECOLOPACK Co., Ltd.', 'ISO 9001', 'ISO 14001', 'エコマーク'];
-                  footerTexts.forEach(text => {
-                    document.querySelectorAll('*').forEach(el => {
-                      if (el.textContent.includes(text) && el.classList.contains('max-w-7xl')) {
-                        el.remove();
-                      }
-                    });
-                  });
-                }
-                
-                // Run on page load
-                document.addEventListener('DOMContentLoaded', removeFooter);
-                // Run immediately if DOM is already loaded
-                if (document.readyState !== 'loading') {
-                  removeFooter();
-                }
-                // Run again after a short delay to catch any dynamic content
-                setTimeout(removeFooter, 100);
-                
-                // Additional cleanup for any remaining colored sections
-                setInterval(() => {
-                  // Find and remove any element with non-white background
-                  document.querySelectorAll('*').forEach(el => {
-                    const computed = window.getComputedStyle(el);
-                    const bgColor = computed.backgroundColor;
-                    const bg = computed.background;
-                    
-                    // Check if background is not white or transparent
-                    if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && 
-                        bgColor !== 'transparent' && bgColor !== 'white' && 
-                        bgColor !== 'rgb(255, 255, 255)' && bgColor !== 'rgba(255, 255, 255, 1)') {
-                      el.style.display = 'none';
-                      el.remove();
-                    }
-                  });
-                  
-                  // Remove any remaining footer-like structures
-                  document.querySelectorAll('.max-w-7xl.mx-auto').forEach(el => {
-                    if (el.querySelector('.grid-cols-4') || el.textContent.includes('株式会社エコロパック')) {
-                      el.remove();
-                    }
-                  });
-                  
-                  // Specifically remove the div.max-w-7xl.mx-auto.px-4.sm:px-6.lg:px-8.py-8 element
-                  document.querySelectorAll('div.max-w-7xl.mx-auto.px-4.py-8, div.max-w-7xl.mx-auto.px-4.sm\\:px-6.lg\\:px-8.py-8').forEach(el => {
-                    el.remove();
-                  });
-                  
-                  // Remove any empty space after main content
+                  // main要素の後の兄弟要素を削除
                   const main = document.querySelector('main');
                   if (main) {
-                    // Remove all siblings after main
                     let nextSibling = main.nextElementSibling;
                     while (nextSibling) {
                       const toRemove = nextSibling;
                       nextSibling = nextSibling.nextElementSibling;
                       toRemove.remove();
                     }
-                    
-                    // Ensure body doesn't have extra height
-                    document.body.style.minHeight = 'auto';
-                    document.body.style.height = 'auto';
                   }
-                }, 500);
+                }
+                
+                // DOMContentLoadedイベントで実行
+                if (document.readyState === 'loading') {
+                  document.addEventListener('DOMContentLoaded', removeFooterElements);
+                } else {
+                  // 既に読み込み済みの場合は即実行
+                  removeFooterElements();
+                }
+                
+                // 動的コンテンツ対応のため遅延実行
+                setTimeout(removeFooterElements, 100);
               }
             `,
           }}

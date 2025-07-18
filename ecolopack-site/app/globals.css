@@ -3,10 +3,10 @@
 @import "tailwindcss";
 
 @layer base {
+  /* === 基本設定 === */
   html {
     scroll-behavior: smooth;
     background: white !important;
-    height: 100%;
   }
   
   body {
@@ -14,143 +14,67 @@
     background: white !important;
     background-color: white !important;
     background-image: none !important;
-    min-height: 100%;
     margin: 0;
     padding: 0;
   }
   
-  /* Remove any extra space at the bottom */
+  /* === メインコンテンツの設定 === */
   main {
     margin-bottom: 0 !important;
     padding-bottom: 0 !important;
+    min-height: auto !important;
   }
   
-  /* Force all elements to have transparent or white background */
+  /* === 背景画像の無効化 === */
   body * {
     background-image: none !important;
   }
   
-  /* Force remove all backgrounds except white */
-  * {
-    background-color: transparent !important;
-  }
-  
-  body, main, section, div {
-    background: white !important;
-    background-color: white !important;
-  }
-  
-  /* Specific overrides for divs with background images */
+  /* インラインスタイルの背景画像を無効化 */
   div[style*="background-image"] {
     background-image: none !important;
     background: transparent !important;
   }
   
-  /* Remove the specific div with classes max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 */
-  div.max-w-7xl.mx-auto.px-4.sm\:px-6.lg\:px-8.py-8,
-  div.max-w-7xl.mx-auto.px-4.py-8 {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    height: 0 !important;
-    width: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: none !important;
-    overflow: hidden !important;
-    position: absolute !important;
-    left: -9999px !important;
-  }
-  
-  /* Remove any map-related backgrounds and blue background elements */
-  div[class*="map"], 
-  div[id*="map"],
-  div[style*="map"],
-  div[style*="background-color: blue"],
-  div[style*="background: blue"],
-  div[style*="bg-blue"],
-  div[class*="bg-blue"],
-  div[style*="background-color: #"],
-  div[style*="background: #"],
-  div[style*="background-color: rgb"],
-  div[style*="background: rgb"],
-  div[style*="rgba"],
-  div[style*="background-color"][style*="blue"],
-  div[style*="background"][style*="blue"],
-  *[style*="background-color: skyblue"],
-  *[style*="background: skyblue"],
-  *[style*="lightblue"],
-  *[style*="#87CEEB"],
-  *[style*="#ADD8E6"],
-  *[style*="#B0E0E6"],
-  *[style*="rgb(135, 206, 235)"],
-  *[style*="rgb(173, 216, 230)"],
-  *[style*="rgb(176, 224, 230)"] {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    height: 0 !important;
-    width: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: none !important;
-    overflow: hidden !important;
-    position: absolute !important;
-    left: -9999px !important;
-  }
-  
-  /* Remove footer sections only */
+  /* === フッター関連の非表示 === */
   footer {
     display: none !important;
   }
   
-  /* Target only footer-specific patterns */
-  footer .max-w-7xl.mx-auto.py-8,
-  footer div.grid.grid-cols-1.md\:grid-cols-4.gap-6,
-  footer div.mt-6.pt-6.border-t {
-    display: none !important;
-  }
-  
-  /* Hide only truly empty sections */
-  section:empty {
-    display: none !important;
-  }
-  
-  .min-h-screen {
-    min-height: auto !important;
-  }
-  
-  /* Remove all footer-related spacing */
-  body > div:last-child,
-  main + *,
-  main ~ *,
-  body > *:not(script):last-child {
-    display: none !important;
-  }
-  
-  /* Fix page height to content */
-  body {
-    min-height: auto !important;
-    height: auto !important;
-  }
-  
-  main {
-    min-height: auto !important;
-  }
-  
-  /* Remove footer-specific patterns only */
+  /* フッター専用セクションの非表示 */
+  .footer-section,
   #footer-container,
   .footer-wrapper {
     display: none !important;
   }
   
-  /* Remove any non-white background sections after main content */
-  main ~ *:not(:empty) {
+  /* === 特定要素の非表示（青い背景・地図など） === */
+  /* 地図関連要素 */
+  div[class*="map"], 
+  div[id*="map"],
+  div[style*="map"],
+  .map-section {
+    display: none !important;
+    position: absolute !important;
+    left: -9999px !important;
+  }
+  
+  /* 青い背景要素（フッター用） */
+  .blue-background-section {
     display: none !important;
   }
   
-  /* Force white background on everything and hide colored sections */
-  div[style*="background"]:not([style*="white"]):not([style*="transparent"]) {
+  /* 特定のdivクラスの非表示（フッター用） */
+  div.max-w-7xl.mx-auto.px-4.sm\:px-6.lg\:px-8.py-8:has(.border-white\/20),
+  div.max-w-7xl.mx-auto.px-4.py-8:has(.border-white\/20) {
+    display: none !important;
+    position: absolute !important;
+    left: -9999px !important;
+  }
+  
+  /* === レイアウト調整 === */
+  /* 空のセクションを非表示 */
+  section:empty {
     display: none !important;
   }
 }
